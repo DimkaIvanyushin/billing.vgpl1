@@ -1,0 +1,107 @@
+ul.list-group li span.pull-right{
+    display: none;
+}
+
+ul.list-group li:hover{
+    cursor: pointer;
+}
+
+ul.list-group li:hover span.pull-right{
+    display: inline-block;
+}
+
+span#group{
+    display: block;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    padding-top: 12px;
+    position: absolute;
+}
+
+span#group:hover{
+    background-color: #28a74514;
+    cursor: pointer;
+}
+
+span#group:focus{
+    outline-color: #28a745;
+    outline-style: dashed;
+    outline-width: 1px;
+}
+
+.card{
+    border: none;
+    border-radius: 0;
+    border-top: 2px solid #33b35a;
+    box-shadow: 5px 5px 0px #39383614;
+}
+
+.side-navbar{
+    padding: 0;
+    min-height: 100%;
+    background-color: #393836;
+    border-right: 4px solid #33b35a;
+}
+
+.active_nav{
+    background-color: #33b35a !important;
+}
+
+/* TODO  bootstrap Исправить в самом bootstrap*/
+.btn{
+    border-radius: 0;
+}
+
+.form-control:focus {
+    border-color: #33b35a;
+    box-shadow: 0 0 0 0.2rem rgba(51, 179, 90, 0.18);
+}
+
+.form-control {
+    border-radius: 0;
+}
+/* end */
+
+
+.side-main{
+    background-color: #eaeaea;
+}
+.side-navbar .list-group-item {
+    border-radius: 0;
+    border-bottom: 0;
+    border-top: 0;
+    padding: 5px 0px;
+    background-color: #393836;
+}
+.side-navbar .list-group-item:hover{
+    background-color: #33b35a;
+}
+
+.side-navbar .list-group-item a{
+    color: #fff;
+}
+
+.container-fluid {
+    min-height: 100vh;
+}
+
+.side-navbar .list-group-item a i{
+    margin-right: 7px;
+    width: 20px;
+    height: 16px;
+}
+
+.card ul li:hover{
+    background-color: #33b35a;
+    color: #fff;
+}
+
+.row.main{
+    margin-top: 20px;
+}
+
+td.sum{
+    text-align: center;
+    font-weight: bold;
+}
