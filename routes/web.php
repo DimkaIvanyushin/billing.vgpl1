@@ -11,9 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('entry.home');
-});
+
+Route::get('/', [
+    'uses' => 'EntryController@home',
+    'as' => 'entry.home'
+]);
 
 /*
 

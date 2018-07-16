@@ -84,11 +84,31 @@ class TeacherController extends Controller
 
     public function add_other_hour(Request $request)
     {
-        $teacher = OtherHoure::firstOrNew(['teacher_id' => $request->teacher_id]);
-        $teacher[$request->name] = $request->value;
+        $value = $request->value;
+        $teacher_id = $request->teacher_id;
+
+        if (empty($value))
+        {
+            $value = 0;
+        }
+
+        $teacher = OtherHoure::firstOrNew(['teacher_id' => $teacher_id]);
+
+        $teacher[$request->name] = $value;
         $teacher->save();
 
-        return response('Done!', 200);
+        // количество часов по предметам
+        $sum_hour_group = TableHoure::where('teacher_id', $teacher_id)->sum('hour');
+
+        // общие количество часов
+        // получаем тарификацию преподавателя
+        $tarificatin = Teacher::find($teacher_id)->other_hour()->first();
+        $total = $sum_hour_group + array_sum($tarificatin->toArray());
+
+        return response([
+            'sum_hour_group' => $sum_hour_group,
+            'total' => $total
+        ], 200);
     }
 
     public function edit($id)
@@ -141,6 +161,11 @@ class TeacherController extends Controller
         $entry_id = $request->entry_id;
         $value = $request->value;
 
+        if (empty($value))
+        {
+            $value = 0;
+        }
+
         $entry = TableHoure::find($entry_id);
         $entry->hour = $value;
         $entry->save();
@@ -149,9 +174,22 @@ class TeacherController extends Controller
         $teacher_id = $entry->teacher_id;
         $discipline_id = $entry->discipline_id;
 
+        // количество часов по предмету
         $sum = TableHoure::where('teacher_id', $teacher_id)->where('discipline_id',$discipline_id)->sum('hour');
 
-        return response($sum, 200);
+        // количество часов по предметам
+        $sum_hour_group = TableHoure::where('teacher_id', $teacher_id)->sum('hour');
+
+        // общие количество часов
+        // получаем тарификацию преподавателя
+        $tarificatin = Teacher::find($teacher_id)->other_hour()->first();
+        $total = $sum_hour_group + array_sum($tarificatin->toArray());
+
+        return response([
+            'sum'=> $sum,
+            'sum_hour_group' => $sum_hour_group,
+            'total' => $total
+        ], 200);
     }
 
     public function put(Request $request)

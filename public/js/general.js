@@ -8,6 +8,12 @@ $(document).ready(function () {
         }
     });
 
+    $('.rotate').css('height', $('.rotate').width());
+
+    $('#print').click(function() {
+        window.print();
+    });
+
     //
     //
     //
@@ -27,9 +33,13 @@ $(document).ready(function () {
             "value": value,
             "entry_id": entry_id
         }).done(function (data) {
-            // если сервер ответил OK то начинаем считать
+
+            // если сервер ответил OK то
             // вставляем сумму часов
-            $row_elements.find('.sum').text(data);
+            $row_elements.find('.sum').text(data.sum);
+            $('strong#sum_hour_group').text(data.sum_hour_group);
+            $('strong#total').text(data.total);
+
         });
     });
 
@@ -43,7 +53,10 @@ $(document).ready(function () {
             "value": value,
             "teacher_id": teacher_id
         }).done(function (data) {
-            console.log('send');
+            // если сервер ответил OK то
+            // вставляем сумму часов
+            $('strong#sum_hour_group').text(data.sum_hour_group);
+            $('strong#total').text(data.total);
         });
     });
 
@@ -74,8 +87,5 @@ $(document).ready(function () {
                 $(value).hide();
             }
         });
-
     });
-
-
 });

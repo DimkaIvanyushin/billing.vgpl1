@@ -1,16 +1,16 @@
-ul.list-group li span.pull-right{
+ul.list-group li span.pull-right {
     display: none;
 }
 
-ul.list-group li:hover{
+ul.list-group li:hover {
     cursor: pointer;
 }
 
-ul.list-group li:hover span.pull-right{
+ul.list-group li:hover span.pull-right {
     display: inline-block;
 }
 
-span#group{
+span#group {
     display: block;
     height: 100%;
     width: 100%;
@@ -19,37 +19,37 @@ span#group{
     position: absolute;
 }
 
-span#group:hover{
+span#group:hover {
     background-color: #28a74514;
     cursor: pointer;
 }
 
-span#group:focus{
+span#group:focus {
     outline-color: #28a745;
     outline-style: dashed;
     outline-width: 1px;
 }
 
-.card{
+.card {
     border: none;
     border-radius: 0;
     border-top: 2px solid #33b35a;
     box-shadow: 5px 5px 0px #39383614;
 }
 
-.side-navbar{
+.side-navbar {
     padding: 0;
     min-height: 100%;
     background-color: #393836;
     border-right: 4px solid #33b35a;
 }
 
-.active_nav{
+.active_nav {
     background-color: #33b35a !important;
 }
 
 /* TODO  bootstrap Исправить в самом bootstrap*/
-.btn{
+.btn {
     border-radius: 0;
 }
 
@@ -61,12 +61,13 @@ span#group:focus{
 .form-control {
     border-radius: 0;
 }
+
 /* end */
 
-
-.side-main{
+.side-main {
     background-color: #eaeaea;
 }
+
 .side-navbar .list-group-item {
     border-radius: 0;
     border-bottom: 0;
@@ -74,11 +75,12 @@ span#group:focus{
     padding: 5px 0px;
     background-color: #393836;
 }
-.side-navbar .list-group-item:hover{
+
+.side-navbar .list-group-item:hover {
     background-color: #33b35a;
 }
 
-.side-navbar .list-group-item a{
+.side-navbar .list-group-item a {
     color: #fff;
 }
 
@@ -86,22 +88,72 @@ span#group:focus{
     min-height: 100vh;
 }
 
-.side-navbar .list-group-item a i{
+.side-navbar .list-group-item a i {
     margin-right: 7px;
     width: 20px;
     height: 16px;
 }
 
-.card ul li:hover{
+.card ul li:hover {
     background-color: #33b35a;
     color: #fff;
 }
 
-.row.main{
+.row.main {
     margin-top: 20px;
 }
 
-td.sum{
+td.sum {
     text-align: center;
     font-weight: bold;
+}
+
+.rotate {
+    height: 201px;
+    max-height: 62px !important;
+    margin: 12px -65px 21px -26px;
+
+    -moz-transform: rotate(-90.0deg); /* FF3.5+ */
+    -o-transform: rotate(-90.0deg); /* Opera 10.5 */
+    -webkit-transform: rotate(-90.0deg); /* Saf3.1+, Chrome */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083); /* IE6,IE7 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)"; /* IE8 */
+}
+
+table.main_table thead tr td {
+    vertical-align: bottom;
+}
+
+a {
+    color: #33b35a;
+    text-decoration: none;
+    background-color: transparent;
+    -webkit-text-decoration-skip: objects;
+}
+
+a:hover {
+    color: #205430;
+    text-decoration: none;
+}
+
+.table-bordered td, .table-bordered th {
+    border: 1px solid #9e9e9e;
+}
+
+@media print {
+
+    @page {
+        size: landscape;
+        margin: 0;
+    }
+
+    .side-navbar {
+        display: none;
+    }
+
+    .control_button{
+        display: none;
+    }
+
+
 }

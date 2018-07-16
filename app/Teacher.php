@@ -21,7 +21,7 @@ class Teacher extends Model
      */
     public function other_hour()
     {
-        return $this->hasMany('App\OtherHoure')->select(array('elective_hour', 'DK_hour', 'room_hour', 'examinations_hour', 'teacher_id'));
+        return $this->hasMany('App\OtherHoure')->select(array('elective_hour', 'DK_hour', 'room_hour', 'examinations_hour'));
     }
 
 }
