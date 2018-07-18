@@ -19,6 +19,7 @@ class CreateOtherHouresTable extends Migration
             $table->integer('DK_hour')->default(0);
             $table->integer('room_hour')->default(0);
             $table->integer('examinations_hour')->default(0);
+            $table->integer('supervision_hour')->default(0);
             $table->integer('teacher_id');
             $table->timestamps();
         });

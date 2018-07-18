@@ -1,6 +1,7 @@
 $(document).ready(function () {
 
-    $('[data-toggle="tooltip"]').tooltip();
+    var max_hour = 1440;
+    var min_hour = 800;
 
     $.ajaxSetup({
         headers: {
@@ -8,9 +9,28 @@ $(document).ready(function () {
         }
     });
 
+    $('[data-toggle="tooltip"]').tooltip();
+
+    function verification(data) {
+        if (data > max_hour) {
+            $('strong#total').css({color: 'red'});
+
+            $('.danger_hour').text('Перебор ' + (max_hour - data) + ' час.');
+            $('.danger_hour').show();
+        } else if (data < min_hour) {
+            $('strong#total').css({color: 'red'});
+
+            $('.danger_hour').text('Недобор на ' + (data - min_hour) + ' час.');
+            $('.danger_hour').show();
+        } else {
+            $('strong#total').css({color: 'green'})
+            $('.danger_hour').hide();
+        }
+    }
+
     $('.rotate').css('height', $('.rotate').width());
 
-    $('#print').click(function() {
+    $('#print').click(function () {
         window.print();
     });
 
@@ -19,9 +39,14 @@ $(document).ready(function () {
     //
     // Добавить часы
 
+    $('.input_hour').focus(function () {
+        $(this).text('');
+    });
+
     $('.input_hour').focusout(function () {
         // получаем значение
         var value = $(this).text();
+
         // получаем id записи что бы по нему искать
         var entry_id = $(this).attr('entry_id');
 
@@ -36,11 +61,19 @@ $(document).ready(function () {
 
             // если сервер ответил OK то
             // вставляем сумму часов
+
+            // если часов больше чем 1440 и меньше 800 то выделяем текст красным
+            verification(data.total);
+
             $row_elements.find('.sum').text(data.sum);
             $('strong#sum_hour_group').text(data.sum_hour_group);
             $('strong#total').text(data.total);
 
         });
+    });
+
+    $('.input_other_houer').focus(function () {
+        $(this).text('');
     });
 
     $('.input_other_houer').focusout(function () {
@@ -55,6 +88,10 @@ $(document).ready(function () {
         }).done(function (data) {
             // если сервер ответил OK то
             // вставляем сумму часов
+
+            // если часов больше чем 1440 и меньше 800 то выделяем текст красным
+            verification(data.total);
+
             $('strong#sum_hour_group').text(data.sum_hour_group);
             $('strong#total').text(data.total);
         });

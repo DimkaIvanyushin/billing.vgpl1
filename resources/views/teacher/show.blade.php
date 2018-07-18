@@ -3,6 +3,25 @@
 @section('content')
 
     <div class="row main">
+        <div class="col-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"> {{ $teacher['name']}} </h5>
+                    <p class="card-text"></p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Количество часов <strong id="total">{{ $total }}</strong></li>
+                    <li class="list-group-item">Количество предметов <strong> {{ $count_discipline }}</strong></li>
+                </ul>
+                <div class="card-body">
+                    <a href="#" class="card-link">Редактировать имя</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row main">
         <div class="col-12">
             @if (count($groups) > 0)
                 <table class="table table-bordered bg-white">
@@ -71,12 +90,13 @@
             <table class="table table-bordered bg-white">
                 <thead>
                 <tr>
-                    <td data-toggle="tooltip" title="Всего"></i> Всего по предметам</td>
-                    <td data-toggle="tooltip" title="Факультатив"></i> Факультатив</td>
-                    <td data-toggle="tooltip" title="Дополнительный контроль"> ДК</td>
-                    <td data-toggle="tooltip" title="Кабинеты"> Кабинет</td>
-                    <td data-toggle="tooltip" title="Экзамены"> Экзамен</td>
-                    <td data-toggle="tooltip" title="Всего часов">Всего</td>
+                    <td data-toggle="tooltip" title="Всего"><strong>Всего по предметам</strong></td>
+                    <td data-toggle="tooltip" title="Факультатив"><strong>Факультатив</strong></td>
+                    <td data-toggle="tooltip" title="Дополнительный контроль"><strong>Дополнительный контроль</strong></td>
+                    <td data-toggle="tooltip" title="Кабинеты"><strong>Кабинет</strong></td>
+                    <td data-toggle="tooltip" title="Экзамены"><strong>Экзамен</strong></td>
+                    <td data-toggle="tooltip" title="Кураторство"><strong>Кураторство</strong></td>
+                    <td data-toggle="tooltip" title="Всего часов"><strong>Всего</strong></td>
                 </tr>
                 </thead>
                 <tbody>
@@ -98,32 +118,42 @@
                 <td style="padding: 0; position: relative;">
             <span id="group" class="input_other_houer" name="DK_hour"
                   contenteditable>
-            @if ($other_hour->DK_hour > 0)
+                @if ($other_hour->DK_hour > 0)
                     {{ $other_hour->DK_hour }}
                 @endif</span></td>
                 </td>
                 <td style="padding: 0; position: relative;">
-        <span id="group" class="input_other_houer" name="room_hour"
-              contenteditable>
-        @if ($other_hour->room_hour > 0)
-                {{ $other_hour->room_hour }}
-            @endif
-    </span></td>
+                    <span id="group" class="input_other_houer" name="room_hour" contenteditable>
+                        @if ($other_hour->room_hour > 0)
+                            {{ $other_hour->room_hour }}
+                        @endif
+                    </span>
                 </td>
                 <td style="padding: 0; position: relative;">
-    <span id="group" class="input_other_houer" name="examinations_hour"
-          contenteditable>
-    @if ($other_hour->examinations_hour > 0)
-            {{ $other_hour->examinations_hour }}
-        @endif
-</span></td>
+                    <span id="group" class="input_other_houer" name="examinations_hour" contenteditable>
+                        @if ($other_hour->examinations_hour > 0)
+                            {{ $other_hour->examinations_hour }}
+                        @endif
+                    </span>
                 </td>
+                <td style="padding: 0; position: relative;">
+                    <span id="group" class="input_other_houer" name="supervision_hour" contenteditable>
+                        @if ($other_hour->supervision_hour > 0)
+                            {{ $other_hour->supervision_hour }}
+                    @endif
+                    </span>
+                </td>
+
                 <td>
                     <strong id="total">{{ $total }}</strong>
                 </td>
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <div class="alert alert-danger danger_hour" role="alert" style="display: none">
+
     </div>
 
     <input type="hidden" id="teacher_id" value="{{ $teacher->id }}">

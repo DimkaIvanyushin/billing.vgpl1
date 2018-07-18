@@ -20,14 +20,15 @@ span#group {
 }
 
 span#group:hover {
-    background-color: #28a74514;
+    background-color: #28a7451f;
     cursor: pointer;
+    color: black;
 }
 
 span#group:focus {
     outline-color: #28a745;
     outline-style: dashed;
-    outline-width: 1px;
+    outline-width: 2px;
 }
 
 .card {
@@ -140,6 +141,11 @@ a:hover {
     border: 1px solid #9e9e9e;
 }
 
+.overflow-y {
+    width: 100%;
+    overflow-y: auto;
+}
+
 @media print {
 
     @page {
@@ -155,5 +161,9 @@ a:hover {
         display: none;
     }
 
+    .overflow-y {
+        width: fit-content;
+        overflow-y: inherit;
+    }
 
 }
