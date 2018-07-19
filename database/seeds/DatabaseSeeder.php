@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Course;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,6 +12,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        Course::create(['name' => '1 курс']);
+        Course::create(['name' => '2 курс']);
+        Course::create(['name' => '3 курс']);
+        Course::create(['name' => 'ТУ курс']);
+        Course::create(['name' => 'ССО']);
     }
 }

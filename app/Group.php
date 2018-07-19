@@ -8,10 +8,9 @@ class Group extends Model
 {
     protected $table = 'groups';
 
-
-    public function houre()
+    public function hours()
     {
-        return $this->hasMany('App\TableHoure','group_id');
+        return $this->hasMany('App\TableHoure');
     }
 
 }

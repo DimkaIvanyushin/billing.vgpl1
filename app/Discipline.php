@@ -9,12 +9,9 @@ class Discipline extends Model
 
     protected $fillable = ['name'];
 
-    /**
-     * Получить все задачи дисциплины
-     */
-    public function get_entryes()
+    public function hours()
     {
-        return $this->hasMany(Entry::class);
+        return $this->hasMany('App\TableHoure');
     }
 
 }

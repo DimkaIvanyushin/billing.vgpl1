@@ -32,10 +32,8 @@ span#group:focus {
 }
 
 .card {
-    border: none;
-    border-radius: 0;
+    border: 1px solid #b3b3b3;
     border-top: 2px solid #33b35a;
-    box-shadow: 5px 5px 0px #39383614;
 }
 
 .side-navbar {
@@ -43,6 +41,7 @@ span#group:focus {
     min-height: 100%;
     background-color: #393836;
     border-right: 4px solid #33b35a;
+    text-align: center;
 }
 
 .active_nav {
@@ -50,10 +49,6 @@ span#group:focus {
 }
 
 /* TODO  bootstrap Исправить в самом bootstrap*/
-.btn {
-    border-radius: 0;
-}
-
 .form-control:focus {
     border-color: #33b35a;
     box-shadow: 0 0 0 0.2rem rgba(51, 179, 90, 0.18);
@@ -146,6 +141,13 @@ a:hover {
     overflow-y: auto;
 }
 
+.control_button{
+    background: #dadada;
+    border-bottom: 1px solid #adadad;
+    margin-top: 0 !important;
+    padding: 10px;
+}
+
 @media print {
 
     @page {
@@ -166,4 +168,11 @@ a:hover {
         overflow-y: inherit;
     }
 
+    #del_dis_teacher{
+        display: none;
+    }
+
+    #discipline_chose{
+        display: none;
+    }
 }

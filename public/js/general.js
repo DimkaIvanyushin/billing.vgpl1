@@ -109,6 +109,36 @@ $(document).ready(function () {
         });
     });
 
+
+    //
+    //
+    //
+    // Удалить дисциплину у преподавателя
+
+    $('i#del_dis_teacher').click(function () {
+        var $_this = $(this);
+        // получаем id записи что бы по нему искать
+        var discipline_id = $_this.parent().attr('discipline_id');
+        // получить id преподавателя
+        var teacher_id = $("input#teacher_id").val();
+
+        $.post("/teacher/discipline/delete", {
+            "discipline_id": discipline_id,
+            "teacher_id": teacher_id
+        }).done(function (data) {
+
+            // Если ответ с сервера ОК! то удаляем строку
+            $_this.parent().parent().remove();
+
+            // Вставляем пересчитанные часы после удаления
+
+            // если часов больше чем 1440 и меньше 800 то выделяем текст красным
+            verification(data.total);
+
+            $('strong#total').text(data.total);
+        });
+    });
+
     //
     //
     // Поиск по списку
@@ -125,4 +155,5 @@ $(document).ready(function () {
             }
         });
     });
+
 });

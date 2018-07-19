@@ -19,6 +19,17 @@
                                 их <strong>через запятую</strong>. Например: 66,67,68,69
                             </small>
                         </div>
+
+                        <div class="form-group has-danger">
+                            <label for="exampleInputEmail1">Выберите курс</label>
+                            <select class="custom-select" id="course" name="course_id">
+                                <option disabled>Выберите курс</option>
+                                @foreach ($courses as $course)
+                                    <option value="{{$course['id']}}">{{ $course['name'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <button type="submit" class="btn btn-primary">Добавить</button>
                     </form>
                 </div>

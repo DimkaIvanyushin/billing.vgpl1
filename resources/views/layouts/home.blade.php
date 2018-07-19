@@ -51,8 +51,9 @@
                     @endif
                 </div>
                 <div class="card-footer text-muted">
-                    <a class="btn btn-success" href="{{Request::url()}}/create"><i class="fas fa-plus"></i>
-                        Добавить</a>
+                    <a class="btn btn-success col-12" href="{{Request::url()}}/create">
+                        <strong>Добавить</strong>
+                    </a>
                 </div>
             </div>
         </div>

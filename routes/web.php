@@ -60,7 +60,7 @@ Route::get('/teacher/edit/{id}', [
 
 Route::put('/teacher/edit', 'TeacherController@put');
 Route::get('/teacher/delete/{id}', 'TeacherController@delete')->where('id','[0-9]+');
-
+Route::post('/teacher/discipline/delete', 'TeacherController@discipline_delete');
 /*
 
 Discipline

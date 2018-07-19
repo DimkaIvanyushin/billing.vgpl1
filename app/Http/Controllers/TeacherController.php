@@ -210,4 +210,31 @@ class TeacherController extends Controller
         return redirect()->route('teacher.home');
     }
 
+    //
+    //
+    //Удаление предмета у преподавателя
+
+    public function discipline_delete(Request $request)
+    {
+        $teacher_id = $request->teacher_id;
+        $discipline_id = $request->discipline_id;
+
+        $teacher = Teacher::find($teacher_id);
+        $teacher->hours()->where('discipline_id', '=', $discipline_id)->delete();
+
+
+        // количество часов по предметам
+        $sum_hour_group = TableHoure::where('teacher_id', $teacher_id)->sum('hour');
+
+        // общие количество часов
+        // получаем тарификацию преподавателя
+        $tarificatin = Teacher::find($teacher_id)->other_hour()->first();
+        $total = $sum_hour_group + array_sum($tarificatin->toArray());
+
+        return response([
+            'sum_hour_group' => $sum_hour_group,
+            'total' => $total
+        ], 200);
+    }
+
 }

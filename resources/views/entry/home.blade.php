@@ -1,12 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-
-
     <div class="row main control_button">
         <div class="col-12">
             <button id="print" class="btn btn-success">
-                <i class="fas fa-print"></i> Печать
+                <i class="fas fa-print"></i>
             </button>
         </div>
     </div>

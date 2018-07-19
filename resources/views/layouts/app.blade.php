@@ -17,27 +17,27 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-2 side-navbar">
+            <div class="col-1 side-navbar">
                 <ul class="list-group">
                     <li class="list-group-item {{ Request::is('/') ? 'active_nav' : '' }}">
                         <a class="nav-link " href="/"><i
-                            class="fas fa-home"></i>Записи</a>
+                            class="fas fa-home"></i></a>
                         </li>
                         <li class="list-group-item {{ Request::is('teacher') ? 'active_nav' : '' }}">
                             <a class="nav-link " href="/teacher"><i
-                                class="fas fa-users"></i>Преподаватели</a>
+                                class="fas fa-users"></i></a>
                             </li>
                             <li class="list-group-item {{ Request::is('discipline') ? 'active_nav' : '' }}">
                                 <a class="nav-link " href="/discipline"><i
-                                    class="fas fa-book"></i>Дисциплины</a>
+                                    class="fas fa-book"></i></a>
                                 </li>
                                 <li class="list-group-item {{ Request::is('group') ? 'active_nav' : '' }}">
                                     <a class="nav-link " href="/group"><i
-                                        class="fas fa-child"></i>Группы</a>
+                                        class="fas fa-child"></i></a>
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-10 side-main">
+                            <div class="col-11 side-main">
 
                                 <div class="row">
                                     <div class="col-12">

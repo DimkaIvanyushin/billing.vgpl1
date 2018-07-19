@@ -53,7 +53,11 @@ class DisciplineController extends Controller
     public function delete($id)
     {
         $discipline = Discipline::find($id);
+        // Каскадное удаление всех часов данной дисциплины
+        $discipline->hours()->delete();
+        // Удаляем дисциплину
         $discipline->delete();
+
         return redirect()->route('discipline.home');
     }
 
