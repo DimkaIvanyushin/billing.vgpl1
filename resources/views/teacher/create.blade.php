@@ -15,7 +15,7 @@
                                    id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Фамилия Имя Отчество">
                             <small id="emailHelp" class="form-text text-muted">Например: Иванов Иван Иванович</small>
                         </div>
-                        <button type="submit" class="btn btn-primary">Добавить</button>
+                        <button type="submit" class="btn btn-success">Добавить</button>
                     </form>
                 </div>
             </div>

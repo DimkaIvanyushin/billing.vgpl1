@@ -28,7 +28,7 @@ $(document).ready(function () {
         }
     }
 
-    $('.rotate').css('height', $('.rotate').width());
+   // $('.rotate').css('height', $('.rotate').width());
 
     $('#print').click(function () {
         window.print();

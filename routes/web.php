@@ -43,6 +43,10 @@ Route::get('/teacher/show/{id}', [
     'as' => 'teacher.show'
 ]);
 
+Route::get('/teacher/excel/{id}', [
+    'uses' => 'TeacherController@print_excel'
+]);
+
 Route::get('/teacher/create/hour/{id}', [
     'uses' => 'TeacherController@create_hour',
     'as' => 'teacher.create_hour'
@@ -80,6 +84,11 @@ Route::get('/discipline/create', [
 Route::post('/discipline/add', [
     'uses' => 'DisciplineController@add',
     'as' => 'discipline.add'
+]);
+
+Route::get('/discipline/show/{id}', [
+    'uses' => 'DisciplineController@show',
+    'as' => 'discipline.show'
 ]);
 
 Route::get('/discipline/edit/{id}', [
@@ -120,3 +129,14 @@ Route::get('/group/edit/{id}', [
 
 Route::put('/group/edit', 'GroupController@put');
 Route::get('/group/delete/{id}', 'GroupController@delete')->where('id','[0-9]+');
+
+/*
+ *
+ * Raspisanie
+ *
+ */
+
+Route::get('/raspisanie', [
+    'uses' => 'TimetableController@home',
+    'as' => 'timetable.home'
+]);

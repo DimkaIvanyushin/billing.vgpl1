@@ -60,10 +60,6 @@ span#group:focus {
 
 /* end */
 
-.side-main {
-    background-color: #eaeaea;
-}
-
 .side-navbar .list-group-item {
     border-radius: 0;
     border-bottom: 0;
@@ -73,7 +69,11 @@ span#group:focus {
 }
 
 .side-navbar .list-group-item:hover {
-    background-color: #33b35a;
+
+}
+
+.title_nav{
+    color: white;
 }
 
 .side-navbar .list-group-item a {
@@ -142,17 +142,34 @@ a:hover {
 }
 
 .control_button{
-    background: #dadada;
+    background: #f0f0f0;
     border-bottom: 1px solid #adadad;
     margin-top: 0 !important;
     padding: 10px;
 }
 
+.btn-group{
+    background: red;
+}
+
+.button{
+    background-color: #dddddd;
+    color: black;
+}
+
+.button:hover{
+    background-color: #bfbfbf;
+}
+
+
 @media print {
 
     @page {
-        size: landscape;
         margin: 0;
+    }
+
+    a {;
+        text-decoration: none !important;
     }
 
     .side-navbar {

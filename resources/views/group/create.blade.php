@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="row">
+    <div class="row main">
         <div class="col-6">
             <div class="card">
                 <div class="card-header">
@@ -30,7 +30,7 @@
                             </select>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Добавить</button>
+                        <button type="submit" class="btn btn-success">Добавить</button>
                     </form>
                 </div>
             </div>

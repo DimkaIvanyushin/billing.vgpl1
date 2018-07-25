@@ -6744,6 +6744,7 @@ button.close {
     display: none !important
 }
 
+
 @media print {
     .visible-print-inline-block {
         display: inline-block !important

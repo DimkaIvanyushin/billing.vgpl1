@@ -50,6 +50,33 @@ class DisciplineController extends Controller
         ]);
     }
 
+    public function show($id)
+    {
+        // Получаем дисциплинну
+        $discipline = Discipline::find($id);
+        // получаем все часы данной дисциплины
+        // и группируем их
+        $discipline_hours = $discipline->hours()->get()->groupBy('teacher_id');
+
+        // Общие количество часов дисциплины
+        $total_hour_discipline = 0;
+
+        // преобразуем данные для отправкм
+        $data = [];
+
+        foreach ($discipline_hours as $key => $teacher)
+        {
+            $data[$key]['teacher_name'] = Teacher::find($key)->name;
+            $total_hour_discipline += $data[$key]['teacher_count_hour'] = $teacher->sum('hour');
+        }
+
+        return view('discipline.show', [
+            'discipline' => $discipline,
+            'data' => $data,
+            'total_hour_discipline' =>  $total_hour_discipline
+        ]);
+    }
+
     public function delete($id)
     {
         $discipline = Discipline::find($id);

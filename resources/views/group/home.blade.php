@@ -3,8 +3,8 @@
 @section('content')
     <div class="row main control_button">
         <div class="col-12">
-            <a class="btn btn-success" href="/group/create">
-                <i class="fas fa-plus-circle"></i>
+            <a class="btn btn-default btn-sm text-dark" style="background-color: #dddddd;" href="/group/create">
+                <i class="fas fa-plus-circle text-success"></i> Добавить
             </a>
         </div>
     </div>
