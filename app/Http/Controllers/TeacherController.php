@@ -21,8 +21,60 @@ class TeacherController extends Controller
     public function home()
     {
         $teachers = Teacher::get();
-        return view('layouts.home', [
-            'lists' => $teachers
+        $data = [];
+
+        foreach ($teachers as $teacher) {
+            $data[$teacher->name]['id'] = $teacher->id;
+            $total_hour = $this->generate_date_show($teacher->id)['total_hour'];
+            $data[$teacher->name]['name'] = $teacher->name;
+            $data[$teacher->name]['total_hour'] = $total_hour;
+            $data[$teacher->name]['check_hour'] = ($total_hour > 1400) || ($total_hour < 800) ? true : false;
+        }
+
+        return view('teacher.home', [
+            'lists' => $data,
+            'sort' => 'asc'
+        ]);
+    }
+
+    // TODO сделать тут проверки
+    public function sort($name, $sort)
+    {
+        $data = [];
+
+        if ($name == 'name') {
+            $teachers = Teacher::orderBy('name', $sort)->get();
+        } else {
+            $teachers = Teacher::get();
+        }
+
+        foreach ($teachers as $teacher) {
+            $data[$teacher->name]['id'] = $teacher->id;
+            if ($name == 'hour') {
+                $total_hour = $this->generate_date_show($teacher->id, $sort)['total_hour'];
+            } else {
+                $total_hour = $this->generate_date_show($teacher->id)['total_hour'];
+            }
+            $data[$teacher->name]['name'] = $teacher->name;
+            $data[$teacher->name]['total_hour'] = $total_hour;
+            $data[$teacher->name]['check_hour'] = ($total_hour > 1400) || ($total_hour < 800) ? true : false;
+        }
+
+        if ($name == 'hour') {
+            if ($sort == 'asc') {
+                usort($data, function ($a, $b) {
+                    return $a['total_hour'] > $b['total_hour'];
+                });
+            } else {
+                usort($data, function ($a, $b) {
+                    return $a['total_hour'] < $b['total_hour'];
+                });
+            }
+        }
+
+        return view('teacher.home', [
+            'lists' => $data,
+            'sort' => $sort
         ]);
     }
 
@@ -34,7 +86,7 @@ class TeacherController extends Controller
      * @return array
      */
 
-    private function generate_date_show($id)
+    private function generate_date_show($id, $sort = 'asc')
     {
         $teacher = [];
 
@@ -45,11 +97,6 @@ class TeacherController extends Controller
 
         // получаем преподавателя
         $teacher['teacher_info'] = Teacher::find($id);
-
-        // если не нашёл часов у преподавателя то NULL
-        if (!Teacher::find($id)->hours()->exists()) {
-            return null;
-        }
 
         // получаем все часы преподавателя
         $teacher_hour = Teacher::find($id)->hours()->get();
@@ -70,6 +117,8 @@ class TeacherController extends Controller
 
         // общие количество часов c группами
         $teacher['sum_hour_group'] = 0;
+
+        $teacher['discipline'] = [];
 
         if (count($collection_items) > 0) {
             foreach ($collection_items as $i => $item) {
@@ -180,13 +229,12 @@ class TeacherController extends Controller
     public function print_excel($id)
     {
         $data = $this->generate_date_show($id);
-       
-        header ( "Content-type: application/vnd.ms-excel" );
-        header ( "Content-Disposition: attachment; filename=foo_bar.xls" );
+
+        header("Content-type: application/vnd.ms-excel");
+        header("Content-Disposition: attachment; filename=foo_bar.xls");
 
         $this->generate_exel_table($data);
     }
-
 
     public function edit($id)
     {
@@ -217,6 +265,17 @@ class TeacherController extends Controller
 
         $teacher->delete();
         return redirect()->route('teacher.home');
+    }
+
+    //TODO Добавить проверки на удаление
+
+    public function delete_active(Request $request)
+    {
+        foreach ($request->teacher_id as $teacher) {
+            $this->delete($teacher);
+        }
+
+        return response('Ok!', 200);
     }
 
     public function create_hour($id)

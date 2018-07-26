@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
     <div class="row main control_button">
         <div class="col-10">
             <button onclick="window.history.back();" class="button btn btn-default btn-sm">

@@ -62,8 +62,12 @@ Route::get('/teacher/edit/{id}', [
     'as' => 'teacher.edit'
 ])->where('id','[0-9]+');
 
+Route::get('/teacher/sort/{name}/{sort}', 'TeacherController@sort')->where('sort', 'asc|desc');
+
 Route::put('/teacher/edit', 'TeacherController@put');
 Route::get('/teacher/delete/{id}', 'TeacherController@delete')->where('id','[0-9]+');
+Route::post('/teacher/delete', 'TeacherController@delete_active');
+
 Route::post('/teacher/discipline/delete', 'TeacherController@discipline_delete');
 /*
 

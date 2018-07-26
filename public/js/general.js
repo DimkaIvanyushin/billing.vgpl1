@@ -28,7 +28,7 @@ $(document).ready(function () {
         }
     }
 
-   // $('.rotate').css('height', $('.rotate').width());
+    // $('.rotate').css('height', $('.rotate').width());
 
     $('#print').click(function () {
         window.print();
@@ -109,6 +109,43 @@ $(document).ready(function () {
         });
     });
 
+    //
+    //
+    //
+    // Выделение списка
+    $('ul.items li').click(function () {
+
+        $(this).toggleClass('list-group-item-success');
+
+        var coun_teacher = $('ul.items li.list-group-item-success').length;
+
+        if (coun_teacher > 0) {
+            $('button#delete-items').show();
+        } else {
+            $('button#delete-items').hide();
+        }
+
+        $('button#delete-items span').text(coun_teacher);
+    });
+
+    //
+    //
+    //
+    // массовое удаление
+
+    $('button#delete-items').click(function () {
+
+        var teacher_active_id = [];
+        $('ul.items li.list-group-item-success').each(function () {
+            teacher_active_id.push($(this).attr('id'));
+        });
+
+        $.post("/teacher/delete", {
+            "teacher_id": teacher_active_id
+        }).done(function (data) {
+            location.reload();
+        });
+    });
 
     //
     //
