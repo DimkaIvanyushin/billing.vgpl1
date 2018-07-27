@@ -210,6 +210,7 @@
     </div>
 
     <div class="alert alert-danger danger_hour" role="alert" style="display: none"></div>
+
     <input type="hidden" id="teacher_id" value="{{ $teacher->id }}">
 
 @endsection

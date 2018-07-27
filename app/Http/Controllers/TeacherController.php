@@ -25,10 +25,10 @@ class TeacherController extends Controller
 
         foreach ($teachers as $teacher) {
             $data[$teacher->name]['id'] = $teacher->id;
-            $total_hour = $this->generate_date_show($teacher->id)['total_hour'];
+            $hour = $this->generate_date_show($teacher->id);
             $data[$teacher->name]['name'] = $teacher->name;
-            $data[$teacher->name]['total_hour'] = $total_hour;
-            $data[$teacher->name]['check_hour'] = ($total_hour > 1400) || ($total_hour < 800) ? true : false;
+            $data[$teacher->name]['total_hour'] = $hour['total_hour'];
+            $data[$teacher->name]['check_hour'] = ($hour['total_hour'] > 1400) || ($hour['total_hour'] < 800) ? true : false;
         }
 
         return view('teacher.home', [

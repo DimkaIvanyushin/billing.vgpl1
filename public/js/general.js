@@ -69,6 +69,12 @@ $(document).ready(function () {
             $('strong#sum_hour_group').text(data.sum_hour_group);
             $('strong#total').text(data.total);
 
+            $('div.danger_hour').hide();
+
+        }).fail(function (data) {
+            $('div.danger_hour').text("Ошибка: " + data.statusText).show();
+        }).always(function () {
+
         });
     });
 

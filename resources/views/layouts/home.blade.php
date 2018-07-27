@@ -33,11 +33,11 @@
                                             {{ $list->name }}
                                             <span class="pull-right">
                                     <a href="{{Request::url()}}/show/{{ $list->id }}"><i
-                                                class="fas fa-eye text-white"></i></a>&nbsp;
+                                                class="fas fa-eye text-info"></i></a>&nbsp;
                                     <a href="{{Request::url()}}/edit/{{ $list->id }}"><i
-                                                class="fas fa-pencil-alt text-white"></i></a>&nbsp;
+                                                class="fas fa-pencil-alt text-success"></i></a>&nbsp;
                                     <a href="{{Request::url()}}/delete/{{ $list->id }}"><i
-                                                class="fas fa-trash text-white"></i></a>&nbsp;
+                                                class="fas fa-trash text-danger"></i></a>&nbsp;
                                 </span>
                                         </li>
                                     @endforeach

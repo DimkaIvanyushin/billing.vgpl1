@@ -18,7 +18,7 @@ class DisciplineController extends Controller
     public function home()
     {
         $disciplines = Discipline::get();
-        return view('layouts.home', [
+        return view('discipline.home', [
             'lists' => $disciplines
         ]);
     }

@@ -68,6 +68,7 @@
                                             <span style="margin-right: 10px;"
                                                   class="fa fa-user"></span>
                                             {{ $list['name'] }}
+
                                             @if ($list['check_hour'])
                                                 <span class="badge badge-danger"><i
                                                             class="fas fa-clock"></i> {{ $list['total_hour'] }}</span>

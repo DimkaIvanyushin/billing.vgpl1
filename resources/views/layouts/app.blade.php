@@ -17,34 +17,51 @@
 <body>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-1 side-navbar">
-            <ul class="list-group">
+        <div class="col-12" style="padding: 0">
+            <nav class="navbar navbar-dark py-0 navbar-expand-lg py-md-0" style="background-color: #8ac858;">
 
-                <li class="list-group-item {{ Request::is('/') ? 'active_nav' : '' }}">
-                    <a class="nav-link " href="/"><i
-                                class="fas fa-home"></i></a>
-                </li>
-                <li class="list-group-item {{ Request::is('teacher') ? 'active_nav' : '' }}">
-                    <a class="nav-link " href="/teacher"><i
-                                class="fas fa-users"></i></a>
-                </li>
-                <li class="list-group-item {{ Request::is('discipline') ? 'active_nav' : '' }}">
-                    <a class="nav-link " href="/discipline"><i
-                                class="fas fa-book"></i></a>
-                </li>
+                <span class="navbar-text text-white" style="margin-right: 20px;">
+                      ТАРИФИКАЦИЯ ВГПТК v.1.0.
+                    </span>
 
-                <li class="list-group-item {{ Request::is('group') ? 'active_nav' : '' }}">
-                    <a class="nav-link " href="/group"><i
-                                class="fas fa-child"></i></a>
-                </li>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">
+                                <i class="fas fa-home"></i> Главная
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/teacher">
+                                <i class="fas fa-users"></i> Преподаватели
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/discipline">
+                                <i class="fas fa-book"></i> Дисциплины
+                            </a>
+                        </li>
 
-                <li class="list-group-item">
-                    <a class="nav-link " href="/raspisanie"><i class="fas fa-address-card"></i></a>
-                </li>
-
-            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/group">
+                                <i class="fas fa-child"></i> Группы
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/raspisanie">
+                                <i class="fas fa-address-card"></i> Раписание
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         </div>
-        <div class="col-11 side-main">
+
+        <div class="col-12 side-main">
             <div class="row">
                 <div class="col-12">
                     <div class="col-12">
