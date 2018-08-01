@@ -15,30 +15,38 @@
                 <i class="fas fa-trash text-danger"></i> Удалить (<span> 0 </span>)
             </button>
 
-            <?php $reverse = ($sort == 'asc') ? 'desc' : 'asc';?>
-
-            <button data-toggle="tooltip" data-placement="top" title="Сортировать по имени"
-                    onclick="location.href='/teacher/sort/name/<?php echo $reverse; ?>'" class="btn btn-default btn-sm">
-                <i class="fas fa-sort text-success"></i>
-                <i class="fas fa-user"></i>
-            </button>
-
-            <button data-toggle="tooltip" data-placement="top" title="Сортировать по часам"
-                    onclick="location.href='/teacher/sort/hour/<?php echo $reverse; ?>'" class="btn btn-default btn-sm">
-                <i class="fas fa-sort text-success"></i>
-                <i class="fas fa-clock"></i>
-            </button>
-
         </div>
     </div>
-
     <div class="row main">
         <div class="col-6">
             <div class="card">
                 <div class="card-header">
                     <div class="row">
                         <div class="col-4">
-                            <strong>Список</strong>
+                            <form action="/teacher" class="form-inline" method="GET">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </div>
+                                    <select class="form-control form-control-sm" name="order" id="exampleSelect1">
+                                        <option value="asc">По возрастанию</option>
+                                        <option value="desc">По убыванию</option>
+                                    </select>
+                                    @if(!empty($sortby))
+                                        <div class="input-group-append">
+                                            <a href="/teacher" class="btn btn-danger btn-sm"><i style="padding-top:3px;"
+                                                                                                class="fas fa-times"></i></a>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <input type="hidden" name="sortby" value="name">
+                                <input type="hidden" name="page" value="{{ $teachers->currentPage() }}">
+
+                            </form>
+
                         </div>
                         <div class="col-8">
                             <div class="input-group input-group-sm">
@@ -55,35 +63,33 @@
 
                 </div>
                 <div class="card-body">
-                    @if (count($lists) > 0)
+                    @if (count($teachers) > 0)
                         <div class="row">
                             <div class="col">
                                 <div style="margin-bottom: 10px">
-
-
                                 </div>
                                 <ul class="list-group items">
-                                    @foreach ($lists as $key => $list)
-                                        <li class="list-group-item clearfix" id="{{ $list['id'] }}">
+                                    @foreach ($teachers as $key => $teacher)
+                                        <li class="list-group-item clearfix" id="{{ $teacher->id }}">
                                             <span style="margin-right: 10px;"
                                                   class="fa fa-user"></span>
-                                            {{ $list['name'] }}
+                                            {{ $teacher->name }}
 
-                                            @if ($list['check_hour'])
+                                            @if ($teacher->check_hour)
                                                 <span class="badge badge-danger"><i
-                                                            class="fas fa-clock"></i> {{ $list['total_hour'] }}</span>
+                                                            class="fas fa-clock"></i> {{ $teacher->total_hour }}</span>
                                             @else
                                                 <span class="badge badge-success"><i
-                                                            class="fas fa-clock"></i> {{ $list['total_hour'] }}</span>
+                                                            class="fas fa-clock"></i> {{ $teacher->total_hour }}</span>
                                             @endif
                                             <span class="pull-right">
-                                                <a href="/teacher/show/{{ $list['id'] }}">
+                                                <a href="/teacher/show/{{ $teacher->id}}">
                                                     <i class="fas fa-eye text-primary"></i>
                                                 </a>&nbsp;
-                                                <a href="/teacher/edit/{{ $list['id'] }}">
+                                                <a href="/teacher/edit/{{ $teacher->id }}">
                                                     <i class="fas fa-pencil-alt text-success"></i>
                                                 </a>&nbsp;
-                                                <a href="/teacher/delete/{{ $list['id'] }}">
+                                                <a href="/teacher/delete/{{ $teacher->id }}">
                                                     <i class="fas fa-trash text-danger"></i>
                                                 </a>&nbsp;
                                             </span>
@@ -94,9 +100,18 @@
                         </div>
                     @else
                         <div class="alert alert-info" role="alert">
-                            <strong>Таблица пуста!</strong> добавить записи можно нажав кнопку <strong>Добавить</strong>.
+                            <strong>Таблица пуста!</strong> добавить записи можно нажав кнопку
+                            <strong>Добавить</strong>.
                         </div>
                     @endif
+
+                    <div class="row main">
+                        <div class="col">
+
+                            {{ $links }}
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

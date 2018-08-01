@@ -13,7 +13,7 @@
 
 
 Route::get('/', [
-    'uses' => 'EntryController@home',
+    'uses' => 'TeacherController@entryes',
     'as' => 'entry.home'
 ]);
 
@@ -26,6 +26,11 @@ Teacher
 Route::get('/teacher', [
     'uses' => 'TeacherController@home',
     'as' => 'teacher.home'
+]);
+
+Route::get('/teacher/find', [
+    'uses' => 'TeacherController@find',
+    'as' => 'teacher.find'
 ]);
 
 Route::get('/teacher/create', [

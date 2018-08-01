@@ -64,7 +64,6 @@ class EntryController extends Controller
             }
         }
 
-//        dd($data);
 
         return view('entry.home', [
             'group_list' => $group_list,

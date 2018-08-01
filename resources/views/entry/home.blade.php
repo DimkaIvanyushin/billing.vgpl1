@@ -8,10 +8,26 @@
         }
     </style>
     <div class="row main control_button">
-        <div class="col-12">
+        <div class="col-10">
             <button id="print" class="btn btn-default btn-sm">
                 <i class="fas fa-print text-success"></i> Печатать
             </button>
+        </div>
+
+        <div class="col-2">
+            <form action="teacher/find" method="get">
+                <div class="input-group input-group-sm">
+                    <input type="text" id="search" name="name" class="form-control" AUTOCOMPLETE="off"
+                           aria-label="Small"
+                           aria-describedby="inputGroup-sizing-sm"/>
+
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-success btn-sm">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -84,7 +100,8 @@
 
                             @foreach ($teachers as $key => $teacher)
                                 <tr>
-                                    <td style="border-bottom: 2px solid black;" rowspan=" {{ $teacher['count_discipline'] }}">
+                                    <td style="border-bottom: 2px solid black;"
+                                        rowspan=" {{ $teacher['count_discipline'] }}">
                                         <strong><a href="/teacher/show/{{ $teacher['id'] }}">{{ $key }}</a></strong>
                                     </td>
 
@@ -94,7 +111,7 @@
                                         </td>
 
                                         @foreach ($discipline['hours'] as $hour)
-                                            <td style="{{ $discipline === end($teacher['discipline']) ? 'border-bottom: 2px solid black;' : ''}}" >
+                                            <td style="{{ $discipline === end($teacher['discipline']) ? 'border-bottom: 2px solid black;' : ''}}">
                                                 @if($hour > 0)
                                                     {{ $hour }}
                                                 @endif
@@ -107,12 +124,14 @@
 
                                         @if ($discipline === reset($teacher['discipline']))
                                             @foreach ($teacher['other_hour'] as $key => $hour)
-                                                <td style="border-bottom: 2px solid black;" rowspan=" {{ $teacher['count_discipline'] }}">
+                                                <td style="border-bottom: 2px solid black;"
+                                                    rowspan=" {{ $teacher['count_discipline'] }}">
                                                     {{ $hour }}
                                                 </td>
                                             @endforeach
 
-                                            <td  style="border-bottom: 2px solid black;" rowspan=" {{ $teacher['count_discipline'] }}">
+                                            <td style="border-bottom: 2px solid black;"
+                                                rowspan=" {{ $teacher['count_discipline'] }}">
                                                 <strong>{{ $teacher['total'] }}</strong>
                                             </td>
 

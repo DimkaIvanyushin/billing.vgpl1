@@ -18,7 +18,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12" style="padding: 0">
-            <nav class="navbar navbar-dark py-0 navbar-expand-lg py-md-0" style="background-color: #8ac858;">
+            <nav class="navbar navbar-dark py-0 navbar-expand-lg py-md-0">
 
                 <span class="navbar-text text-white" style="margin-right: 20px;">
                       ТАРИФИКАЦИЯ ВГПТК v.1.0.
@@ -32,28 +32,28 @@
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link" href="/">
-                                <i class="fas fa-home"></i> Главная
+                                <i class="fas fa-home" style="margin-right: 5px"></i> Главная
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {{ ( Request::route()->getName() == 'teacher.home') ? 'active' : '' }}">
                             <a class="nav-link" href="/teacher">
-                                <i class="fas fa-users"></i> Преподаватели
+                                <i class="fas fa-users" style="margin-right: 5px"></i> Преподаватели
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {{ ( Request::route()->getName() == 'discipline.home') ? 'active' : '' }}">
                             <a class="nav-link" href="/discipline">
-                                <i class="fas fa-book"></i> Дисциплины
+                                <i class="fas fa-book" style="margin-right: 5px"></i> Дисциплины
                             </a>
                         </li>
 
-                        <li class="nav-item">
+                        <li class="nav-item" {{ ( Request::route()->getName() == 'group.home') ? 'active' : '' }}>
                             <a class="nav-link" href="/group">
-                                <i class="fas fa-child"></i> Группы
+                                <i class="fas fa-child" style="margin-right: 5px"></i> Группы
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/raspisanie">
-                                <i class="fas fa-address-card"></i> Раписание
+                            <a class="nav-link {{ ( Request::route()->getName() == 'group.home') ? 'active' : '' }}" href="/raspisanie">
+                                <i class="fas fa-address-card" style="margin-right: 5px"></i> Раписание
                             </a>
                         </li>
                     </ul>

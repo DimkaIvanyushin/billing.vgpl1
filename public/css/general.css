@@ -10,24 +10,17 @@ ul.list-group li:hover span.pull-right {
     display: inline-block;
 }
 
-.btn-success,.bg-success,.badge-success{
-    background-color: #8ac858;
-    border: none;
-}
 
-.text-success{
-    text-color: #8ac858;
-}
 
 .navbar-dark .navbar-nav .nav-link {
     color: #ffffff;
 }
 
 .navbar-dark .navbar-nav .nav-link:focus, .navbar-dark .navbar-nav .nav-link:hover {
-    color: rgb(255, 255, 255);
-    background: #7cad55;
-    transition: all .5s;
+    background-color: #3d6898;
+    color: #fff;
 }
+
 
 span#group {
     display: block;
@@ -52,7 +45,6 @@ span#group:focus {
 
 .card {
     border: 1px solid #b3b3b3;
-    border-top: 2px solid #33b35a;
 }
 
 .side-navbar {
@@ -91,7 +83,7 @@ span#group:focus {
 
 }
 
-.title_nav{
+.title_nav {
     color: white;
 }
 
@@ -139,14 +131,13 @@ table.main_table thead tr td {
 }
 
 a {
-    color: #8ac858;
+    color: #4a76a8;
     text-decoration: none;
     background-color: transparent;
-    -webkit-text-decoration-skip: objects;
 }
 
 a:hover {
-    color: #205430;
+
     text-decoration: none;
 }
 
@@ -159,30 +150,46 @@ a:hover {
     overflow-y: auto;
 }
 
-.control_button{
+.control_button {
     background: #f0f0f0;
     border-bottom: 1px solid #adadad;
     margin-top: 0 !important;
     padding: 10px;
 }
 
-.btn-group{
+.btn-group {
     background: red;
 }
 
-.button{
+.button {
     background-color: #dddddd;
     color: black;
 }
 
-.button:hover, .btn:hover{
-    background-color: #bfbfbf;
+.page-link {
+    color: black;
 }
 
-button#delete-items{
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #8ac858;
+    border-color: #8ac858;
+}
+
+.nav-item.active{
+    background-color: #3d6898;
+}
+
+button#delete-items {
     display: none;
 }
 
+.navbar{
+    background-color: #4a76a8;
+    font-size: .94em;
+    text-shadow: 0px 0px 1px #0637a4c2;
+}
 @media print {
 
     @page {
@@ -197,7 +204,7 @@ button#delete-items{
         display: none;
     }
 
-    .control_button{
+    .control_button {
         display: none;
     }
 
@@ -206,11 +213,11 @@ button#delete-items{
         overflow-y: inherit;
     }
 
-    #del_dis_teacher{
+    #del_dis_teacher {
         display: none;
     }
 
-    #discipline_chose{
+    #discipline_chose {
         display: none;
     }
 }

@@ -10,9 +10,21 @@ use App\Teacher;
 use App\Course;
 use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class TeacherController extends Controller
 {
+    private $paginate_count;
+    private $max_hour;
+    private $min_hour;
+
+    function __construct()
+    {
+        $this->paginate_count = 10;
+        $this->max_hour = 1400;
+        $this->min_hour = 800;
+    }
+
     public function create()
     {
         return view('teacher.create');
@@ -20,62 +32,105 @@ class TeacherController extends Controller
 
     public function home()
     {
-        $teachers = Teacher::get();
-        $data = [];
+        $sortby = Input::get('sortby');
+        $order = Input::get('order');
+
+        if ($sortby && $order) {
+            $teachers = Teacher::orderBy($sortby, $order)->paginate($this->paginate_count);
+            $links = $teachers->appends(['sortby' => $sortby, 'order' => $order])->links();
+        } else {
+
+            $teachers = Teacher::paginate($this->paginate_count);
+            $links = $teachers->links();
+        }
 
         foreach ($teachers as $teacher) {
-            $data[$teacher->name]['id'] = $teacher->id;
             $hour = $this->generate_date_show($teacher->id);
-            $data[$teacher->name]['name'] = $teacher->name;
-            $data[$teacher->name]['total_hour'] = $hour['total_hour'];
-            $data[$teacher->name]['check_hour'] = ($hour['total_hour'] > 1400) || ($hour['total_hour'] < 800) ? true : false;
+            $teacher->total_hour = $hour['total_hour'];
+            $teacher->check_hour = ($teacher->total_hour > 1400) || ($teacher->total_hour < 800) ? true : false;
         }
 
         return view('teacher.home', [
-            'lists' => $data,
-            'sort' => 'asc'
+            'teachers' => $teachers,
+            'links' => $links,
+            'sortby' => $sortby
         ]);
+    }
+
+    public function entryes()
+    {
+        // получаем все группы и их курсы для вывода
+        $group_list = $this->generate_group_list();
+
+        // получаем преподавателей
+        $teachers = Teacher::get();
+
+        foreach ($teachers as $i => $teacher) {
+            // получаем все часы преподавателя
+            $teacher_hour = Teacher::find($teacher->id)->hours()->get();
+
+            // групируем по предметам
+            $collection_items = $teacher_hour->groupBy('discipline_id');
+
+            $sum_hour_group = 0;
+
+            if (count($collection_items) > 0) {
+                foreach ($collection_items as $i => $item) {
+                    $discipline_name = Discipline::find($collection_items[$i][0]['discipline_id'])->name;
+                    foreach ($item as $j => $node) {
+                        $data[$teacher->name]['discipline'][$discipline_name]['hours'][Group::find($item[$j]['group_id'])->name] = $item[$j]['hour'];
+                    }
+
+                    $sum_hour_group += $data[$teacher->name]['discipline'][$discipline_name]['sum'] = $collection_items[$i]->sum('hour');
+                }
+
+                // получаем тарификацию преподавателя
+                $tarification = $data[$teacher->name]['other_hour'] = Teacher::find($teacher->id)->other_hour()->first()->toArray();
+                $data[$teacher->name]['total'] = $sum_hour_group + array_sum($tarification);
+                $data[$teacher->name]['id'] = $teacher->id;
+                $data[$teacher->name]['count_discipline'] = count( $data[$teacher->name]['discipline']);
+            }
+        }
+
+        return view('entry.home', [
+            'group_list' => $group_list,
+            'teachers' => $data
+        ]);
+    }
+
+    public function find(Request $request)
+    {
+        
     }
 
     // TODO сделать тут проверки
     public function sort($name, $sort)
     {
-        $data = [];
 
-        if ($name == 'name') {
-            $teachers = Teacher::orderBy('name', $sort)->get();
-        } else {
-            $teachers = Teacher::get();
-        }
+    }
 
-        foreach ($teachers as $teacher) {
-            $data[$teacher->name]['id'] = $teacher->id;
-            if ($name == 'hour') {
-                $total_hour = $this->generate_date_show($teacher->id, $sort)['total_hour'];
-            } else {
-                $total_hour = $this->generate_date_show($teacher->id)['total_hour'];
-            }
-            $data[$teacher->name]['name'] = $teacher->name;
-            $data[$teacher->name]['total_hour'] = $total_hour;
-            $data[$teacher->name]['check_hour'] = ($total_hour > 1400) || ($total_hour < 800) ? true : false;
-        }
+    // получаем все группы и их курсы
+    private function generate_group_list()
+    {
+        // получаем все групы
+        $groups = Group::get();
 
-        if ($name == 'hour') {
-            if ($sort == 'asc') {
-                usort($data, function ($a, $b) {
-                    return $a['total_hour'] > $b['total_hour'];
-                });
-            } else {
-                usort($data, function ($a, $b) {
-                    return $a['total_hour'] < $b['total_hour'];
-                });
+        // групируем по курсам
+        $course_group = $groups->groupBy('course_id');
+
+        // список курсов и их групп
+        $group_list = [];
+
+        if (count($course_group) > 0) {
+            foreach ($course_group as $i => $item) {
+                $group_list[$i]['course_name'] = Course::find($i)->name;
+                $group = $item->toArray();
+                $group_list[$i]['groups'] = $group;
+                $group_list[$i]['count_grups'] = count($group);
             }
         }
 
-        return view('teacher.home', [
-            'lists' => $data,
-            'sort' => $sort
-        ]);
+        return $group_list;
     }
 
     /**
@@ -86,7 +141,7 @@ class TeacherController extends Controller
      * @return array
      */
 
-    private function generate_date_show($id, $sort = 'asc')
+    private function generate_date_show($id)
     {
         $teacher = [];
 
