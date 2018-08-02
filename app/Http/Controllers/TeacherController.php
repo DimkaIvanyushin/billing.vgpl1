@@ -17,12 +17,14 @@ class TeacherController extends Controller
     private $paginate_count;
     private $max_hour;
     private $min_hour;
+    private $count_entry_page;
 
     function __construct()
     {
         $this->paginate_count = 10;
         $this->max_hour = 1400;
         $this->min_hour = 800;
+        $this->count_entry_page = 5;
     }
 
     public function create()
@@ -47,7 +49,7 @@ class TeacherController extends Controller
         foreach ($teachers as $teacher) {
             $hour = $this->generate_date_show($teacher->id);
             $teacher->total_hour = $hour['total_hour'];
-            $teacher->check_hour = ($teacher->total_hour > 1400) || ($teacher->total_hour < 800) ? true : false;
+            $teacher->check_hour = $hour['check_hour'];
         }
 
         return view('teacher.home', [
@@ -62,54 +64,61 @@ class TeacherController extends Controller
         // получаем все группы и их курсы для вывода
         $group_list = $this->generate_group_list();
 
-        // получаем преподавателей
-        $teachers = Teacher::get();
+        // получаем id всех преподавателей, разбиваем постранично
+        $teachers = Teacher::pluck('id')->chunk($this->count_entry_page);
 
-        foreach ($teachers as $i => $teacher) {
-            // получаем все часы преподавателя
-            $teacher_hour = Teacher::find($teacher->id)->hours()->get();
-
-            // групируем по предметам
-            $collection_items = $teacher_hour->groupBy('discipline_id');
-
-            $sum_hour_group = 0;
-
-            if (count($collection_items) > 0) {
-                foreach ($collection_items as $i => $item) {
-                    $discipline_name = Discipline::find($collection_items[$i][0]['discipline_id'])->name;
-                    foreach ($item as $j => $node) {
-                        $data[$teacher->name]['discipline'][$discipline_name]['hours'][Group::find($item[$j]['group_id'])->name] = $item[$j]['hour'];
-                    }
-
-                    $sum_hour_group += $data[$teacher->name]['discipline'][$discipline_name]['sum'] = $collection_items[$i]->sum('hour');
-                }
-
-                // получаем тарификацию преподавателя
-                $tarification = $data[$teacher->name]['other_hour'] = Teacher::find($teacher->id)->other_hour()->first()->toArray();
-                $data[$teacher->name]['total'] = $sum_hour_group + array_sum($tarification);
-                $data[$teacher->name]['id'] = $teacher->id;
-                $data[$teacher->name]['count_discipline'] = count( $data[$teacher->name]['discipline']);
+        $data = [];
+        // получаем все часы преподавателей
+        foreach ($teachers as $i => $page_teacher){
+            foreach ($page_teacher as $j => $teacher) {
+                $data[$i][$j] = $this->generate_date_show($teacher);
             }
         }
 
         return view('entry.home', [
             'group_list' => $group_list,
-            'teachers' => $data
+            'teachers_pages' => $data
         ]);
     }
 
+    //
+    //
+    // Поиск
+
     public function find(Request $request)
     {
-        
+        $name = $request->name;
+
+        // получаем все группы и их курсы для вывода
+        $group_list = $this->generate_group_list();
+
+        // получаем ID всех найденый преподавателей
+        $teachers = Teacher::select('id')->where('name', 'LIKE', "%$name%")->get()->toArray();
+
+        if (count($teachers) > 0) {
+            // получаем все часы преподавателей
+            foreach ($teachers as $key => $teacher) {
+                $teachers[$key] = $this->generate_date_show($teacher['id']);
+            }
+        } else {
+            return redirect()->route('entry.home')
+                ->withErrors([
+                    'error' => 'Преподаватель не найден'
+                ]);
+        }
+
+        return view('entry.home', [
+            'group_list' => $group_list,
+            'teachers' => $teachers
+        ]);
     }
 
-    // TODO сделать тут проверки
-    public function sort($name, $sort)
-    {
+    /**
+     *
+     *  Вернет все группы и их курсы
+     * @return array
+     */
 
-    }
-
-    // получаем все группы и их курсы
     private function generate_group_list()
     {
         // получаем все групы
@@ -191,6 +200,9 @@ class TeacherController extends Controller
         // получаем все часы
         $teacher['total_hour'] = $teacher['sum_hour_group'] + array_sum($teacher['other_hour']->toArray());
 
+        // проверка на допустимое количество часов
+        $teacher['check_hour'] = ($teacher['total_hour'] > $this->max_hour) || ($teacher['total_hour'] < $this->min_hour) ? true : false;
+
         return $teacher;
     }
 
@@ -207,26 +219,11 @@ class TeacherController extends Controller
                 ]);
         }
 
-        // получаем все групы
-        $groups = Group::get();
-
         // получаем все дисциплины
         $disciplines = Discipline::get();
 
-        // групируем по курсам
-        $course_group = $groups->groupBy('course_id');
-
         // список курсов и их групп
-        $group_list = [];
-
-        if (count($course_group) > 0) {
-            foreach ($course_group as $i => $item) {
-                $group_list[$i]['course_name'] = Course::find($i)->name;
-                $group = $item->toArray();
-                $group_list[$i]['groups'] = $group;
-                $group_list[$i]['count_grups'] = count($group);
-            }
-        }
+        $group_list = $this->generate_group_list();
 
         return view('teacher.show', [
             'teacher' => $teacher['teacher_info'],
@@ -268,6 +265,7 @@ class TeacherController extends Controller
         ], 200);
     }
 
+    // TODO Доделать вывод в EXCEL
     // Генерация EXEL данных
     private function generate_exel_table($data)
     {
@@ -427,7 +425,6 @@ class TeacherController extends Controller
 
         $teacher = Teacher::find($teacher_id);
         $teacher->hours()->where('discipline_id', '=', $discipline_id)->delete();
-
 
         // количество часов по предметам
         $sum_hour_group = TableHoure::where('teacher_id', $teacher_id)->sum('hour');

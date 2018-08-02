@@ -9,13 +9,23 @@
     </style>
     <div class="row main control_button">
         <div class="col-10">
+            <button onclick="window.history.back();" class="button btn btn-default btn-sm">
+                <i class="fas fa-undo-alt text-primary"></i> Назад
+            </button>
+
             <button id="print" class="btn btn-default btn-sm">
                 <i class="fas fa-print text-success"></i> Печатать
             </button>
+
+            <a href="/teacher/create" id="print" class="button btn btn-default btn-sm">
+                <i class="fas fa-plus-circle text-primary"></i> Добавить
+            </a>
+
+            
         </div>
 
         <div class="col-2">
-            <form action="teacher/find" method="get">
+            <form action="teacher/find" method="get" style="margin-bottom: 0;">
                 <div class="input-group input-group-sm">
                     <input type="text" id="search" name="name" class="form-control" AUTOCOMPLETE="off"
                            aria-label="Small"
@@ -31,11 +41,15 @@
         </div>
     </div>
 
-    <div class="row main">
-        <div class="col-12">
-            <div class="">
-                @if (count($teachers) > 0)
+
+    @if (count($teachers_pages) > 0)
+        @foreach($teachers_pages as $teachers)
+
                     <div class="overflow-y">
+
+                        <div class="title">ПЕДАГОГИЧЕСКАЯ НАГРУЗКА</div>
+                        <div class="desc">преподавателей учреждения образования "Витебский государственный профессионально-технический колледж машиностроения имени М.Ф.Шмырёва" 2017 - 2018 уч.г.</div>
+
                         <table class="table table-bordered bg-white table-striped main_table" align="center">
                             <thead>
                             <tr>
@@ -98,32 +112,33 @@
                             </thead>
                             <tbody>
 
-                            @foreach ($teachers as $key => $teacher)
+                            @foreach ($teachers as $teacher)
+
                                 <tr>
                                     <td style="border-bottom: 2px solid black;"
                                         rowspan=" {{ $teacher['count_discipline'] }}">
-                                        <strong><a href="/teacher/show/{{ $teacher['id'] }}">{{ $key }}</a></strong>
+                                        <strong><a href="/teacher/show/{{ $teacher['teacher_info']->id }}"> {{ $teacher['teacher_info']->name }}</a></strong>
                                     </td>
 
-                                    @foreach ($teacher['discipline'] as $key => $discipline)
+                                    @foreach ($teacher['discipline'] as $discipline)
                                         <td style="{{ $discipline === end($teacher['discipline']) ? 'border-bottom: 2px solid black;' : ''}}">
-                                            {{ $key }}
+                                            {{ $discipline['discipline'] }}
                                         </td>
 
-                                        @foreach ($discipline['hours'] as $hour)
+                                        @foreach ($discipline['time'] as $hour)
                                             <td style="{{ $discipline === end($teacher['discipline']) ? 'border-bottom: 2px solid black;' : ''}}">
-                                                @if($hour > 0)
-                                                    {{ $hour }}
+                                                @if($hour['hour'] > 0)
+                                                    {{ $hour['hour'] }}
                                                 @endif
                                             </td>
                                         @endforeach
 
                                         <td style="{{ $discipline === end($teacher['discipline']) ? 'border-bottom: 2px solid black;' : ''}}">
-                                            <strong>{{ $discipline['sum'] }}</strong>
+                                            <strong>{{ $discipline['sum_hour'] }}</strong>
                                         </td>
 
                                         @if ($discipline === reset($teacher['discipline']))
-                                            @foreach ($teacher['other_hour'] as $key => $hour)
+                                            @foreach ($teacher['other_hour']['original'] as $hour)
                                                 <td style="border-bottom: 2px solid black;"
                                                     rowspan=" {{ $teacher['count_discipline'] }}">
                                                     {{ $hour }}
@@ -132,7 +147,7 @@
 
                                             <td style="border-bottom: 2px solid black;"
                                                 rowspan=" {{ $teacher['count_discipline'] }}">
-                                                <strong>{{ $teacher['total'] }}</strong>
+                                                <strong>{{ $teacher['total_hour'] }}</strong>
                                             </td>
 
                                         @endif
@@ -143,8 +158,7 @@
                             </tbody>
                         </table>
                     </div>
-                @endif
-            </div>
-        </div>
-    </div>
+                    @endforeach
+                    @endif
+
 @endsection

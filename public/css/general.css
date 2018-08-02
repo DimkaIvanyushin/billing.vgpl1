@@ -142,12 +142,20 @@ a:hover {
 }
 
 .table-bordered td, .table-bordered th {
+    font-size: 13px;
+    padding: 10px;
     border: 1px solid #9e9e9e;
 }
 
 .overflow-y {
     width: 100%;
+    min-height: 880px;
     overflow-y: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #c6c6c6;
+    padding: 10px;
+    background: white;
 }
 
 .control_button {
@@ -190,6 +198,22 @@ button#delete-items {
     font-size: .94em;
     text-shadow: 0px 0px 1px #0637a4c2;
 }
+
+.side-main {
+    background-color: #e6e6e6;
+}
+
+.title{
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.desc{
+    padding: 0px 10%;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
 @media print {
 
     @page {
@@ -211,6 +235,10 @@ button#delete-items {
     .overflow-y {
         width: fit-content;
         overflow-y: inherit;
+
+        margin: 0;
+        border: none;
+        padding: auto;
     }
 
     #del_dis_teacher {
