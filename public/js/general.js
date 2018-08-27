@@ -28,7 +28,7 @@ $(document).ready(function () {
         }
     }
 
-    // $('.rotate').css('height', $('.rotate').width());
+
 
     $('#print').click(function () {
         window.print();
@@ -119,7 +119,7 @@ $(document).ready(function () {
     //
     //
     // Выделение списка
-    $('ul.items li').click(function () {
+    $('ul.items li.check').click(function () {
 
         $(this).toggleClass('list-group-item-success');
 
@@ -198,5 +198,17 @@ $(document).ready(function () {
             }
         });
     });
+
+    // Анимация при загрузке контента
+
+    // $('#loadingDiv')
+    //     .hide()  // Hide it initially
+    //     .ajaxStart(function() {
+    //         $(this).show();
+    //     })
+    //     .ajaxStop(function() {
+    //         $(this).hide();
+    //     })
+    // ;
 
 });

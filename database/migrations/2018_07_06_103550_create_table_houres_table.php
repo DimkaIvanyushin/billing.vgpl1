@@ -18,6 +18,7 @@ class CreateTableHouresTable extends Migration
             $table->integer('discipline_id');
             $table->integer('group_id');
             $table->integer('teacher_id');
+            $table->integer('otherhour_id');
             $table->integer('hour')->default(0);
             $table->timestamps();
         });

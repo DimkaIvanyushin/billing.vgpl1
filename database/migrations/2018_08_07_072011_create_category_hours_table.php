@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDisciplineHouresTable extends Migration
+class CreateCategoryHoursTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateDisciplineHouresTable extends Migration
      */
     public function up()
     {
-        Schema::create('discipline_houres', function (Blueprint $table) {
+        Schema::create('category_hours', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('discipline_id');
-            $table->integer('group_id');
-            $table->integer('hour');
+            $table->string('name');
+            $table->integer('position');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateDisciplineHouresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('discipline_houres');
+        Schema::dropIfExists('category_hours');
     }
 }

@@ -21,7 +21,10 @@
                             </li>
                         @endforeach
                     @endif
-                    <li class="list-group-item"> Часов по предмету "{{ $discipline->name }}" : <strong> {{ $total_hour_discipline }}</strong> ч. </li>
+                    <li class="list-group-item"> Часов по предмету "{{ $discipline->name }}" :
+                        <strong> {{ $total_hour_discipline }}</strong> ч. /
+                        <strong>{{ $discipline->count_hour }} </strong> ч.
+                    </li>
                 </ul>
             </div>
         </div>

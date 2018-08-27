@@ -46,18 +46,27 @@
                             <div class="col">
                                 <ul class="list-group items">
                                     @foreach ($lists as $list)
-                                        <li class="list-group-item clearfix" id="{{ $list->id }}">
-                                            <span class="fa {{ Request::is('teacher') ? 'fa-user' : '' }}{{ Request::is('discipline') ? 'fa-book' : '' }}{{ Request::is('group') ? 'fa-users' : '' }}"></span>
-                                            {{ $list->name }}
-                                            <span class="pull-right">
-                                    <a href="{{Request::url()}}/show/{{ $list->id }}"><i
-                                                class="fas fa-eye text-info"></i></a>&nbsp;
-                                    <a href="{{Request::url()}}/edit/{{ $list->id }}"><i
-                                                class="fas fa-pencil-alt text-success"></i></a>&nbsp;
-                                    <a href="{{Request::url()}}/delete/{{ $list->id }}"><i
-                                                class="fas fa-trash text-danger"></i></a>&nbsp;
-                                </span>
-                                        </li>
+
+                                        <li class="list-group-item">
+                                            Предметы: {{ $list[0]->discipline_type->name }}</li>
+
+                                        @foreach ($list as $discipline)
+                                            <li class="list-group-item clearfix" id="{{ $discipline->id }}">
+                                                <span class="fa {{ Request::is('teacher') ? 'fa-user' : '' }}{{ Request::is('discipline') ? 'fa-book' : '' }}{{ Request::is('group') ? 'fa-users' : '' }}"></span>
+                                                {{ $discipline->name }}
+                                                <span class="badge badge-secondary">
+                                                    {{ $discipline->count_hour }}
+                                                </span>
+                                                <span class="pull-right">
+                                                    <a href="{{Request::url()}}/show/{{ $discipline->id }}"><i
+                                                                class="fas fa-eye text-info"></i></a>&nbsp;
+                                                    <a href="{{Request::url()}}/edit/{{ $discipline->id }}"><i
+                                                                class="fas fa-pencil-alt text-success"></i></a>&nbsp;
+                                                    <a href="{{Request::url()}}/delete/{{ $discipline->id }}"><i
+                                                                class="fas fa-trash text-danger"></i></a>&nbsp;
+                                                </span>
+                                            </li>
+                                        @endforeach
                                     @endforeach
                                 </ul>
                             </div>

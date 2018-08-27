@@ -16,6 +16,8 @@ class CreateDisciplinesTable extends Migration
         Schema::create('disciplines', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->integer('disciplinetype_id');
+            $table->integer('count_hour')->default(0);
             $table->timestamps();
         });
     }

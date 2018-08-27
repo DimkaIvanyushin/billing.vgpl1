@@ -28,6 +28,10 @@ Route::get('/teacher', [
     'as' => 'teacher.home'
 ]);
 
+Route::post('/teacher', [
+    'uses' => 'TeacherController@charts'
+]);
+
 Route::get('/teacher/find', [
     'uses' => 'TeacherController@find',
     'as' => 'teacher.find'

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
     <div class="row main control_button">
         <div class="col-12">
             <button onclick="window.history.back();" class="button btn btn-default btn-sm">
@@ -17,35 +18,14 @@
 
         </div>
     </div>
+
     <div class="row main">
         <div class="col-6">
             <div class="card">
                 <div class="card-header">
                     <div class="row">
                         <div class="col-4">
-                            <form action="/teacher" class="form-inline" method="GET">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <button type="submit" class="btn btn-success btn-sm">
-                                            <i class="fas fa-check"></i>
-                                        </button>
-                                    </div>
-                                    <select class="form-control form-control-sm" name="order" id="exampleSelect1">
-                                        <option value="asc">По возрастанию</option>
-                                        <option value="desc">По убыванию</option>
-                                    </select>
-                                    @if(!empty($sortby))
-                                        <div class="input-group-append">
-                                            <a href="/teacher" class="btn btn-danger btn-sm"><i style="padding-top:3px;"
-                                                                                                class="fas fa-times"></i></a>
-                                        </div>
-                                    @endif
-                                </div>
 
-                                <input type="hidden" name="sortby" value="name">
-                                <input type="hidden" name="page" value="{{ $teachers->currentPage() }}">
-
-                            </form>
 
                         </div>
                         <div class="col-8">
@@ -66,34 +46,42 @@
                     @if (count($teachers) > 0)
                         <div class="row">
                             <div class="col">
-                                <div style="margin-bottom: 10px">
-                                </div>
                                 <ul class="list-group items">
                                     @foreach ($teachers as $key => $teacher)
-                                        <li class="list-group-item clearfix" id="{{ $teacher->id }}">
-                                            <span style="margin-right: 10px;"
-                                                  class="fa fa-user"></span>
-                                            {{ $teacher->name }}
 
-                                            @if ($teacher->check_hour)
-                                                <span class="badge badge-danger"><i
-                                                            class="fas fa-clock"></i> {{ $teacher->total_hour }}</span>
-                                            @else
-                                                <span class="badge badge-success"><i
-                                                            class="fas fa-clock"></i> {{ $teacher->total_hour }}</span>
-                                            @endif
-                                            <span class="pull-right">
-                                                <a href="/teacher/show/{{ $teacher->id}}">
-                                                    <i class="fas fa-eye text-primary"></i>
-                                                </a>&nbsp;
-                                                <a href="/teacher/edit/{{ $teacher->id }}">
-                                                    <i class="fas fa-pencil-alt text-success"></i>
-                                                </a>&nbsp;
-                                                <a href="/teacher/delete/{{ $teacher->id }}">
-                                                    <i class="fas fa-trash text-danger"></i>
-                                                </a>&nbsp;
-                                            </span>
-                                        </li>
+                                        <div class="input-group input-group-sm">
+
+                                            <li class="list-group-item clearfix check" style="width: 94%;"
+                                                id="{{ $teacher->id }}">
+                                                <span style="margin-right: 10px;" class="fa fa-user"></span>
+                                                {{ $teacher->name }}
+
+                                                <span class="pull-right">
+
+                                                </span>
+                                            </li>
+
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-secondary dropdown-toggle"
+                                                        type="button"
+                                                        data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false" id="inputGroup-sizing-sm">
+                                                </button>
+                                                <div class="dropdown-menu" id="inputGroup-sizing-sm">
+                                                    <a class="dropdown-item" href="/teacher/show/{{ $teacher->id}}"><i
+                                                                class="fas fa-eye text-primary"></i> Показать</a>
+                                                    <a class="dropdown-item"
+                                                       href="/teacher/edit/{{ $teacher->id }}"><i
+                                                                class="fas fa-pencil-alt text-success"></i>
+                                                        Редактировать</a>
+                                                    <a class="dropdown-item"
+                                                       href="/teacher/delete/{{ $teacher->id }}"><i
+                                                                class="fas fa-trash text-danger"></i> Удалить</a>
+                                                    <div role="separator" class="dropdown-divider"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     @endforeach
                                 </ul>
                             </div>
@@ -107,8 +95,6 @@
 
                     <div class="row main">
                         <div class="col">
-
-                            {{ $links }}
 
                         </div>
                     </div>

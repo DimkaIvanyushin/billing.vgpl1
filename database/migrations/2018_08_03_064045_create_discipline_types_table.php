@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRaspisaniesTable extends Migration
+class CreateDisciplineTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,9 @@ class CreateRaspisaniesTable extends Migration
      */
     public function up()
     {
-        Schema::create('raspisanies', function (Blueprint $table) {
+        Schema::create('discipline_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('group_id');
-            $table->integer('discipline_id');
-            $table->integer('teacher_id');
-            $table->string('room');
-            $table->integer('number');
-            $table->date('day');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -32,6 +27,6 @@ class CreateRaspisaniesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('raspisanies');
+        Schema::dropIfExists('discipline_types');
     }
 }

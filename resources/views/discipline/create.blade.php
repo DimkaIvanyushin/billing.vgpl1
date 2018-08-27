@@ -20,6 +20,25 @@
                                 История,Английский язык
                             </small>
                         </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Количество часов за учебный год</label>
+                            <input type="text" AUTOCOMPLETE="off" name="count_hour" class="form-control"
+                                   id="exampleInputEmail1" aria-describedby="emailHelp"
+                                   placeholder="Количество часов">
+                        </div>
+
+                        <div class="form-group has-danger">
+                            <label for="exampleInputEmail1">Выберите профиль предмета</label>
+                            <select class="custom-select" id="course" name="discipline_type">
+                                <option disabled>Выберите профиль предмета</option>
+                                @foreach ($disciplines_type as $discipline_type)
+                                    <option value="{{$discipline_type['id']}}">{{ $discipline_type['name'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+
                         <button type="submit" class="btn btn-success">Добавить</button>
                     </form>
                 </div>
