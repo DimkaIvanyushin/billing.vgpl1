@@ -139,6 +139,7 @@ Route::get('/group/edit/{id}', [
     'as' => 'group.edit'
 ])->where('id','[0-9]+');
 
+Route::get('/group/show/{id}', 'GroupController@show')->where('id','[0-9]+');
 
 Route::put('/group/edit', 'GroupController@put');
 Route::get('/group/delete/{id}', 'GroupController@delete')->where('id','[0-9]+');

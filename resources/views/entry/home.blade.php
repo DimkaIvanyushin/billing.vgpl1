@@ -35,95 +35,76 @@
         </div>
     </div>
 
-    @if (count($teachers_pages) > 0)
-        @foreach($teachers_pages as $teachers)
+    <div class="overflow-y">
 
-            <div class="overflow-y">
-
-                <div class="title">ПЕДАГОГИЧЕСКАЯ НАГРУЗКА</div>
-                <div class="desc">преподавателей учреждения образования "Витебский государственный
-                    профессионально-технический колледж машиностроения имени М.Ф.Шмырёва" 2017 - 2018 уч.г.
-                </div>
+        @if($data > 0)
+            @foreach($data as $name => $teacher)
+                <div class="title">{{ $name }}</div>
 
                 <table class="table table-bordered bg-white table-striped main_table" align="center">
                     <thead>
-                    <tr>
-                        <td rowspan="2" data-toggle="tooltip" title="ФИО"> Ф.И.О.</td>
-                        <td rowspan="2" data-toggle="tooltip" title="Предмет">Предмет</td>
-
-                        @foreach ($group_list as $groups)
-                            <td colspan="{{ $groups['count_grups'] }}">
-                                <strong>{{ $groups['course_name'] }}</strong>
-                            </td>
-                        @endforeach
-
-                        <td rowspan="2" data-toggle="tooltip" title="Итого">
-                            <div class="rotate">
-                                <strong>Итого </strong>
-                            </div>
+                    <td rowspan="2">Дисциплина</td>
+                    <td rowspan="2">
+                        <div class="rotate">
+                            Группа
+                        </div>
+                    </td>
+                    <td rowspan="2">
+                        <div class="rotate">
+                            <strong>
+                                Всего
+                            </strong>
+                        </div>
+                    </td>
+                    @foreach($category_hours as $category)
+                        <td>
+                            <div class="rotate">{{ $category->name  }}</div>
                         </td>
-
-                        <td rowspan="2" data-toggle="tooltip" title="Всего">
-                            <div class="rotate">
-                                <strong>
-                                    Всего
-                                </strong>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        @foreach ($group_list as $key=>$groups)
-                            @foreach ($groups['groups'] as $group)
-                                <td data-toggle="tooltip" title=" {{ $group['name'] }}">
-                                    {{ $group['name'] }}
-                                </td>
-                            @endforeach
-                        @endforeach
-                    </tr>
+                    @endforeach
                     </thead>
                     <tbody>
+                    @foreach($teacher['data'] as $discipline => $item)
+                        <td rowspan="{{ count($item) }}">
+                            {{ $discipline }}
+                        </td>
 
-                    @foreach ($teachers as $teacher)
-
-                        <tr>
-                            <td style="border-bottom: 2px solid black;"
-                                rowspan=" {{ $teacher['count_discipline'] }}">
-                                <strong><a href="/teacher/show/{{ $teacher['teacher_info']->id }}"> {{ $teacher['teacher_info']->name }}</a></strong>
+                        @foreach($item as $name_group => $group)
+                            <td>
+                                {{ $name_group }}
                             </td>
 
-                            @foreach ($teacher['discipline'] as $discipline)
-                                <td style="{{ $discipline === end($teacher['discipline']) ? 'border-bottom: 2px solid black;' : ''}}">
-                                    {{ $discipline['discipline'] }}
-                                </td>
-
-                                @foreach ($discipline['time'] as $hour)
-                                    <td style="{{ $discipline === end($teacher['discipline']) ? 'border-bottom: 2px solid black;' : ''}}">
-                                        @if($hour['hour'] > 0)
-                                            {{ $hour['hour'] }}
-                                        @endif
-                                    </td>
+                            <td><strong>{{ $group['sum'] }}</strong></td>
+                            @foreach($group['hours'] as $item)
+                                <td>{{ $item }}</td>
                                 @endforeach
-
-                                <td style="{{ $discipline === end($teacher['discipline']) ? 'border-bottom: 2px solid black;' : ''}}">
-                                    <strong>{{ $discipline['sum_hour'] }}</strong>
-                                </td>
-
-                                @if ($discipline === reset($teacher['discipline']))
-
-                                    <td style="border-bottom: 2px solid black;"
-                                        rowspan=" {{ $teacher['count_discipline'] }}">
-                                        <strong>{{ $teacher['total_hour'] }}</strong>
-                                    </td>
-
-                                @endif
-                        </tr>
+                                </tr>
+                            @endforeach
                         @endforeach
+                        @if(isset($teacher['total']['hours']))
+                            <td colspan="2" style="text-align: right">
+                                <strong>ИТОГО</strong>
+                            </td>
+
+                            <td><strong>{{ $teacher['total']['sum'] }}</strong></td>
+                            @foreach($teacher['total']['hours'] as $item)
+
+                                <td><strong>{{ $item }}</strong></td>
+                            @endforeach
+                        @endif
+                        <tr>
+                            <td colspan="2" style="text-align: right">
+                                <strong>
+                                    ВСЕГО
+                                </strong>
+                            </td>
+                            <td>
+                                {{ $teacher['total']['total'] }}</strong>
+                            </td>
                         </tr>
-                    @endforeach
                     </tbody>
                 </table>
-            </div>
-        @endforeach
+            @endforeach
+    </div>
     @endif
 
 @endsection

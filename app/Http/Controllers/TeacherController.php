@@ -39,9 +39,22 @@ class TeacherController extends Controller
 
     public function entryes()
     {
+        $teachers = Teacher::get()->sortBy('name');
+        $category_hours = CategoryHours::get();
+        $discipline = Discipline::get();
+        $groups = Group::get();
+
+        $data = [];
+
+        foreach ($teachers as $teacher) {
+            $data[$teacher->name] = $this->get_hour_teacher($teacher);
+        }
 
         return view('entry.home', [
-
+            'category_hours' => $category_hours,
+            'discipline' => $discipline,
+            'groups' => $groups,
+            'data' => $data
         ]);
     }
 
@@ -53,18 +66,13 @@ class TeacherController extends Controller
         ]);
     }
 
-    public function show($id)
+    private function get_hour_teacher($teacher)
     {
-        $teacher = Teacher::find($id);
-        $category_hours = CategoryHours::get();
-        $discipline = Discipline::get();
-        $groups = Group::get();
-
-        $teacher_discipline = TableHoure::get()->where('teacher_id', $teacher['id'])->groupBy('discipline_id');
-
         $data = [];
         $total['sum'] = 0;
         $total['total'] = 0;
+
+        $teacher_discipline = TableHoure::get()->where('teacher_id', $teacher['id'])->groupBy('discipline_id');
 
         if (count($teacher_discipline) > 0) {
             foreach ($teacher_discipline as $key => $item) {
@@ -90,20 +98,29 @@ class TeacherController extends Controller
                 }
             }
 
-            //dd($data);
-
             $total['total'] = array_sum($total['hours']) - $total['hours']['Теория'] - $total['hours']['ЛПЗ'];
         }
+
+        return ['data' => $data, 'total' => $total];
+    }
+
+    public function show($id)
+    {
+        $teacher = Teacher::find($id);
+        $category_hours = CategoryHours::get();
+        $discipline = Discipline::get();
+        $groups = Group::get();
+
+        $teacher_hour = $this->get_hour_teacher($teacher);
 
         return view('teacher.show', [
             'teacher' => $teacher,
             'category_hours' => $category_hours,
             'discipline' => $discipline,
             'groups' => $groups,
-            'data' => $data,
-            'total' => $total
+            'data' => $teacher_hour['data'],
+            'total' => $teacher_hour['total']
         ]);
-
     }
 
     // TODO Доделать вывод в EXCEL
@@ -150,7 +167,7 @@ class TeacherController extends Controller
         }
 
         // удаляем все часы преподавателя
-        $teacher_hours = TableHoure::where('teacher_id',$teacher->id)->delete();
+        $teacher_hours = TableHoure::where('teacher_id', $teacher->id)->delete();
 
         // удаляем преподавателя
         $teacher->delete();

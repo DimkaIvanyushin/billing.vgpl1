@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Discipline;
+use App\TableHoure;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreRequest;
 use App\Group;
@@ -47,10 +49,8 @@ class GroupController extends Controller
         $data = explode(",", $request->name);
         $course_id = $request->course_id;
 
-        if ($data)
-        {
-            foreach ($data as $value)
-            {
+        if ($data) {
+            foreach ($data as $value) {
                 $group = new Group();
                 $group->name = $value;
                 $group->course_id = $course_id;
@@ -92,5 +92,28 @@ class GroupController extends Controller
         $group->name = $request->name;
         $group->save();
         return redirect()->route('group.home');
+    }
+
+    public function show($id)
+    {
+        $data = [];
+        $group = Group::find($id);
+        $teachers = TableHoure::get()->where('group_id', $group->id)->groupBy('teacher_id');
+
+        foreach ($teachers as $teacher_id => $teacher) {
+            $teacher_name = Teacher::find($teacher_id)->name;
+            $disciplines = $teacher->groupBy('discipline_id');
+
+            foreach ($disciplines as $discipline_id => $discipline) {
+                $discipline_name = Discipline::find($discipline_id)->name;
+                foreach ($discipline as $disc) {
+                    $data[$teacher_name][$discipline_name][$disc->category->name] = $disc['hour'];
+                }
+            }
+        }
+
+        return view('group.show', [
+            'data' => $data
+        ]);
     }
 }

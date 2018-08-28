@@ -17,4 +17,20 @@ class TableHoure extends Model
     {
         return $this->belongsTo('App\Group');
     }
+
+    public function teacher()
+    {
+        return $this->belongsTo('App\Teacher');
+    }
+
+    public function discipline()
+    {
+        return $this->belongsTo('App\Discipline');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo('App\CategoryHours', 'otherhour_id');
+    }
+
 }
