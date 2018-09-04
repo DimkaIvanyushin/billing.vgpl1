@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreRequest;
 use App\Group;
 use App\Teacher;
+use App\CategoryHours;
+
 
 class GroupController extends Controller
 {
@@ -77,7 +79,6 @@ class GroupController extends Controller
     public function delete($id)
     {
         $group = Group::find($id);
-
         // Каскадное удаление всех часов данной группы
         $group->hours()->delete();
         // Удаление самой группы
@@ -97,6 +98,7 @@ class GroupController extends Controller
     public function show($id)
     {
         $data = [];
+        $category_hours = CategoryHours::get();
         $group = Group::find($id);
         $teachers = TableHoure::get()->where('group_id', $group->id)->groupBy('teacher_id');
 
@@ -107,13 +109,19 @@ class GroupController extends Controller
             foreach ($disciplines as $discipline_id => $discipline) {
                 $discipline_name = Discipline::find($discipline_id)->name;
                 foreach ($discipline as $disc) {
-                    $data[$teacher_name][$discipline_name][$disc->category->name] = $disc['hour'];
+                    $data[$teacher_name]['disciplines'][$discipline_name][$disc->category->name] = $disc['hour'];
                 }
+                $data[$teacher_name]['sum'] = 
+                
+                $data[$teacher_name]['disciplines'][$discipline_name]['1 полугодие'] +
+                $data[$teacher_name]['disciplines'][$discipline_name]['2 полугодие'];
             }
         }
 
         return view('group.show', [
-            'data' => $data
+            'group'=> $group,
+            'data' => $data,
+            'category_hours' => $category_hours
         ]);
     }
 }

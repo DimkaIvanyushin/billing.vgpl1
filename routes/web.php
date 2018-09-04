@@ -64,7 +64,7 @@ Route::get('/teacher/create/hour/{id}', [
 Route::post('/teacher/hour/add_discipline', 'TeacherController@add_discipline');
 
 Route::post('/teacher/hour/add', 'TeacherController@add_hour');
-Route::post('/teacher/other_hour/add', 'TeacherController@add_other_hour');
+Route::post('/teacher/hour/edit', 'TeacherController@edit_hour');
 
 Route::get('/teacher/edit/{id}', [
     'uses' => 'TeacherController@edit',

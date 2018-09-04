@@ -74,7 +74,7 @@
             </div>
         </div>
     </div>
-
+ 
     <div class="row main control_button">
         <div class="col-10">
             <button onclick="window.history.back();" class="button btn btn-default btn-sm">
@@ -112,53 +112,47 @@
 
                 <table class="table table-bordered bg-white table-striped main_table" align="center">
                     <thead>
-                    <td rowspan="2">Дисциплина</td>
-                    <td rowspan="2">
-                        <div class="rotate">
-                            Группа
-                        </div>
-                    </td>
-                    <td rowspan="2">
-                        <div class="rotate">
-                            <strong>
-                                Всего
-                            </strong>
-                        </div>
-                    </td>
+                    <td class="table_desc" rowspan="2">Дисциплина</td>
+                    <td class="table_desc" rowspan="2">Группа</td>
+                    <td class="table_desc" rowspan="2">%</td>
+                    <td class="table_desc" rowspan="2"><strong>Всего</strong></td>
                     @foreach($category_hours as $category)
-                        <td>
-                            <div class="rotate">{{ $category->name  }}</div>
-                        </td>
+                        <td class="table_desc">{{ $category->name  }}</td>
                     @endforeach
                     </thead>
                     <tbody>
                     @foreach($data as $discipline => $item)
-                        <td rowspan="{{ count($item) }}">
+                        <td rowspan="{{ count($item['groups']) }}">
                             {{ $discipline }}
                         </td>
-                        @foreach($item as $name_group => $group)
+
+                        @foreach($item['groups'] as $name_group => $group)
                             <td>
-                                <form action="/teacher/discipline/delete" method="post">
+                                <form style="display:inline" action="/teacher/discipline/delete" method="post">
                                     {{ csrf_field() }}
 
                                     <input type="hidden" name="teacher_id" value="{{ $teacher['id'] }}">
                                     <input type="hidden" name="discipline_name" value="{{ $discipline }}">
                                     <input type="hidden" name="group_name" value="{{ $name_group }}">
 
-                                    <input type="submit" value="Удалить">
+                                    <button type="submit"><i class="fas fa-trash-alt text-danger"></i></button>
                                 </form>
-
                                 {{ $name_group }}
                             </td>
+                            <td>
+                                    {{ $item['percent'] }}
+                            </td>
                             <td><strong>{{ $group['sum'] }}</strong></td>
-                            @foreach($group['hours'] as $item)
-                                <td>{{ $item }}</td>
-                                @endforeach
-                                </tr>
+                        
+                            @foreach($group['hours'] as $entry)
+                                <td entry_id="{{ $entry['id'] }}" contenteditable='true'>{{ $entry['hour'] }}</td>   
                             @endforeach
+                                </tr>
                         @endforeach
+                    @endforeach
+
                         @if(isset($total['hours']))
-                            <td colspan="2" style="text-align: right">
+                            <td colspan="3" style="text-align: right">
                                 <strong>ИТОГО</strong>
                             </td>
                             <td><strong>{{ $total['sum'] }}</strong></td>
@@ -167,13 +161,13 @@
                             @endforeach
                         @endif
                         <tr>
-                            <td colspan="2" style="text-align: right">
+                            <td colspan="3" style="text-align: right">
                                 <strong>
                                     ВСЕГО
                                 </strong>
                             </td>
-                            <td>
-                                {{ $total['total'] }}</strong>
+                        <td style="text-align: left;" colspan="{{ count($total['hours']) + 1 }}">
+                                <strong>{{ $total['total'] }}</strong>
                             </td>
                         </tr>
                     </tbody>
@@ -198,6 +192,26 @@
 
             $( "input#1" ).val(val);
         };
+
+        $('td').focusout(function () {
+        // получаем значение
+        var value = $(this).text();
+
+        // получаем id записи что бы по нему искать
+        var entry_id = $(this).attr('entry_id');
+
+        // отсылаем на сервер данные
+        $.post("/teacher/hour/edit", {
+            "value": value,
+            "entry_id": entry_id
+        }).done(function (data) {
+            // если сервер ответил OK то
+            location.reload();
+        }).fail(function (data) {
+            // ошибка
+            console.log('error');
+        })
+    });
 
         $( "input#2" ).blur(calc_lpz);
         $( "input#3" ).blur(calc_lpz);

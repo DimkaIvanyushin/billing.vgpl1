@@ -42,42 +42,7 @@ $(document).ready(function () {
     $('.input_hour').focus(function () {
         $(this).text('');
     });
-
-    $('.input_hour').focusout(function () {
-        // получаем значение
-        var value = $(this).text();
-
-        // получаем id записи что бы по нему искать
-        var entry_id = $(this).attr('entry_id');
-
-        // получаем все элементы выбранной строки в таблицу
-        var $row_elements = $(this).parent().parent();
-
-        // отсылаем на сервер данные
-        $.post("/teacher/hour/add", {
-            "value": value,
-            "entry_id": entry_id
-        }).done(function (data) {
-
-            // если сервер ответил OK то
-            // вставляем сумму часов
-
-            // если часов больше чем 1440 и меньше 800 то выделяем текст красным
-            verification(data.total);
-
-            $row_elements.find('.sum').text(data.sum);
-            $('strong#sum_hour_group').text(data.sum_hour_group);
-            $('strong#total').text(data.total);
-
-            $('div.danger_hour').hide();
-
-        }).fail(function (data) {
-            $('div.danger_hour').text("Ошибка: " + data.statusText).show();
-        }).always(function () {
-
-        });
-    });
-
+    
     $('.input_other_houer').focus(function () {
         $(this).text('');
     });

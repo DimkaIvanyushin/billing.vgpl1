@@ -8,6 +8,7 @@ use App\TableHoure;
 use App\Teacher;
 use App\Course;
 use App\CategoryHours;
+use App\DisciplineType;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -46,8 +47,16 @@ class TeacherController extends Controller
 
         $data = [];
 
+        // TODO говно КОД
+        $i = 0;
+        $j = 0;
         foreach ($teachers as $teacher) {
-            $data[$teacher->name] = $this->get_hour_teacher($teacher);
+            if ($i >= 3) {
+                $i = 0;
+                $j++;
+            }
+            $data[$j][$teacher->name] = $this->get_hour_teacher($teacher);
+            $i++;
         }
 
         return view('entry.home', [
@@ -79,13 +88,23 @@ class TeacherController extends Controller
                 $discipline_teacher = Discipline::find($key);
                 $groups_discipline = $item->groupBy('group_id');
 
+                // в зависимости от предмета, находим процентную ставку
+                if ($discipline_teacher->discipline_type->id == 1) {
+                    $percent = 5;
+                } else {
+                    $percent = 10;
+                }
+                
+                $data[$discipline_teacher->name]['percent'] =  $percent;
+
                 foreach ($groups_discipline as $key => $group_disciplines) {
                     $group_teacher = Group::find($key);
 
                     foreach ($group_disciplines as $group_discipline) {
                         $category_hour = CategoryHours::find($group_discipline['otherhour_id']);
 
-                        $data[$discipline_teacher->name][$group_teacher->name]['hours'][$category_hour->name] = $group_discipline['hour'];
+                        $data[$discipline_teacher->name]['groups'][$group_teacher->name]['hours'][$category_hour->name]['hour'] = $group_discipline['hour'];
+                        $data[$discipline_teacher->name]['groups'][$group_teacher->name]['hours'][$category_hour->name]['id'] = $group_discipline['id'];
                         if (!isset($total['hours'][$category_hour->name])) {
                             $total['hours'][$category_hour->name] = 0;
                         }
@@ -93,8 +112,10 @@ class TeacherController extends Controller
                     }
 
                     //TODO переделать по позициям а не обращаться через имя
-                    $data[$discipline_teacher->name][$group_teacher->name]['sum'] = $data[$discipline_teacher->name][$group_teacher->name]['hours']['1 полугодие'] + $data[$discipline_teacher->name][$group_teacher->name]['hours']['2 полугодие'];
-                    $total['sum'] += $data[$discipline_teacher->name][$group_teacher->name]['sum'];
+                    $data[$discipline_teacher->name]['groups'][$group_teacher->name]['sum'] = 
+                    $data[$discipline_teacher->name]['groups'][$group_teacher->name]['hours']['1 полугодие']['hour'] + 
+                    $data[$discipline_teacher->name]['groups'][$group_teacher->name]['hours']['2 полугодие']['hour'];
+                    $total['sum'] += $data[$discipline_teacher->name]['groups'][$group_teacher->name]['sum'];
                 }
             }
 
@@ -209,8 +230,14 @@ class TeacherController extends Controller
             $table_hour->hour = $hour;
             $table_hour->save();
         }
-
         return redirect('teacher/show/' . $request->teacher_id);
+    }
+
+    public function edit_hour(Request $request)
+    {
+        $entry = TableHoure::find($request->entry_id);
+        $entry->hour = $request->value;
+        $entry->save();
     }
 
     public function put(Request $request)

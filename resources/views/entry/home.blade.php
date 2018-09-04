@@ -35,53 +35,49 @@
         </div>
     </div>
 
-    <div class="overflow-y">
+    @if($data > 0)
 
-        @if($data > 0)
-            @foreach($data as $name => $teacher)
-                <div class="title">{{ $name }}</div>
-
-                <table class="table table-bordered bg-white table-striped main_table" align="center">
+    @foreach ($data as $page)
+        <div class="overflow-y">    
+            @foreach($page as $name => $teacher)
+                <table class="table table-bordered bg-white table-striped main_table table-hover" align="center">
                     <thead>
-                    <td rowspan="2">Дисциплина</td>
-                    <td rowspan="2">
-                        <div class="rotate">
-                            Группа
-                        </div>
-                    </td>
-                    <td rowspan="2">
-                        <div class="rotate">
-                            <strong>
-                                Всего
-                            </strong>
-                        </div>
-                    </td>
+                    <tr>
+                        <td class="table_title" colspan="{{  count($category_hours) + 4}}">{{ $name }}</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2" class="table_desc">Дисциплина</td>
+                        <td rowspan="2" class="table_desc">Группа</td>
+                        <td rowspan="2" class="table_desc">%</td>
+                        <td rowspan="2" class="table_desc"><strong>Всего</strong></td>
+                    </tr>
                     @foreach($category_hours as $category)
-                        <td>
-                            <div class="rotate">{{ $category->name  }}</div>
+                        <td class="table_desc">
+                        {{ $category->name  }}
                         </td>
                     @endforeach
                     </thead>
                     <tbody>
-                    @foreach($teacher['data'] as $discipline => $item)
-                        <td rowspan="{{ count($item) }}">
+                    @foreach($teacher['data'] as $discipline => $entry)
+                        <td rowspan="{{ count($entry['groups']) }}">
                             {{ $discipline }}
                         </td>
-
-                        @foreach($item as $name_group => $group)
+                        @foreach($entry['groups'] as $name_group => $group)
                             <td>
                                 {{ $name_group }}
                             </td>
-
+                            <td>
+                                    {{ $entry['percent'] }}
+                            </td>
                             <td><strong>{{ $group['sum'] }}</strong></td>
                             @foreach($group['hours'] as $item)
-                                <td>{{ $item }}</td>
+                                <td>{{ $item['hour'] }}</td>
                                 @endforeach
                                 </tr>
                             @endforeach
                         @endforeach
                         @if(isset($teacher['total']['hours']))
-                            <td colspan="2" style="text-align: right">
+                            <td colspan="3" style="text-align: right">
                                 <strong>ИТОГО</strong>
                             </td>
 
@@ -92,19 +88,19 @@
                             @endforeach
                         @endif
                         <tr>
-                            <td colspan="2" style="text-align: right">
+                            <td colspan="3" style="text-align: right">
                                 <strong>
                                     ВСЕГО
                                 </strong>
                             </td>
-                            <td>
-                                {{ $teacher['total']['total'] }}</strong>
+                            <td style="text-align: left;" colspan="{{ count($category_hours) + 1}}">
+                                <strong>{{ $teacher['total']['total'] }}</strong>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             @endforeach
-    </div>
+        </div>
+        @endforeach
     @endif
-
 @endsection
