@@ -43,7 +43,7 @@
                 <table class="table table-bordered bg-white table-striped main_table table-hover" align="center">
                     <thead>
                     <tr>
-                        <td class="table_title" colspan="{{  count($category_hours) + 4}}">{{ $name }}</td>
+                    <td class="table_title" colspan="{{  count($category_hours) + 4}}"><a href="/teacher/show/{{ $teacher['id']}}">{{ $name }}</a></td>
                     </tr>
                     <tr>
                         <td rowspan="2" class="table_desc">Дисциплина</td>
@@ -53,14 +53,14 @@
                     </tr>
                     @foreach($category_hours as $category)
                         <td class="table_desc">
-                        {{ $category->name  }}
+                        {{ $category->name}}
                         </td>
                     @endforeach
                     </thead>
                     <tbody>
                     @foreach($teacher['data'] as $discipline => $entry)
                         <td rowspan="{{ count($entry['groups']) }}">
-                            {{ $discipline }}
+                            <a href="{{ $entry['url'] }}">{{ $discipline }}</a>
                         </td>
                         @foreach($entry['groups'] as $name_group => $group)
                             <td>

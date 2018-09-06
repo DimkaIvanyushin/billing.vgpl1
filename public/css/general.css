@@ -207,6 +207,14 @@ td.table_title{
     border-color: #4a76a8;
 }
 
+td.table_title a {
+    color: white;
+}
+
+td.table_title a:hover{
+    text-decoration: underline;
+}
+
 td.table_desc{
     background-color: #dddddd;
     border-bottom: none;

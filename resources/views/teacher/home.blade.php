@@ -20,87 +20,67 @@
     </div>
 
     <div class="row main">
-        <div class="col-6">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-4">
+        <div class="col-12">
+            @if (count($teachers) > 0)
+            <div class="overflow-y">    
+            <table class="table table-bordered bg-white table-striped main_table">
+                    <thead>
+                        <tr>
+                            <td class="table_desc">ID</td>
+                            <td style="max-width:1px;" class="table_desc">Редактировать</td>
+                            <td style="max-width:1px;" class="table_desc">Удалить</td>
+                            <td class="table_desc">Инициалы</td>
+                            <td class="table_desc">Часы</td>
+                            <td class="table_desc">Предметы</td>
+                            <td class="table_desc">Группы</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($teachers as $key => $teacher)        
+                            <tr>
+                            <td rowspan="{{ count($teacher['discipline'])}}">{{$teacher['id']}}</td>
+                            
+                                <td style="padding:0px;" rowspan="{{ count($teacher['discipline'])}}">
+                                    <a href="/teacher/edit/{{$teacher['id']}}">
+                                        <i class="fas fa-pencil-alt text-success"></i>
+                                    </a>
+                                </td>
+                                <td style="padding:0px;" rowspan="{{ count($teacher['discipline'])}}">
+                                    <a href="/teacher/delete/{{$teacher['id']}}">
+                                        <i class="fas fa-trash text-danger"></i> 
+                                    </a>
+                                </td>
 
-
-                        </div>
-                        <div class="col-8">
-                            <div class="input-group input-group-sm">
-                                <div class="input-group-prepend">
-                                <span class="input-group-text" id="inputGroup-sizing-sm"><i
-                                            class="fas fa-search"></i></span>
-                                </div>
-                                <input type="text" id="search" class="form-control" AUTOCOMPLETE="off"
-                                       aria-label="Small"
-                                       aria-describedby="inputGroup-sizing-sm">
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="card-body">
-                    @if (count($teachers) > 0)
-                        <div class="row">
-                            <div class="col">
-                                <ul class="list-group items">
-                                    @foreach ($teachers as $key => $teacher)
-
-                                        <div class="input-group input-group-sm">
-
-                                            <li class="list-group-item clearfix check" style="width: 94%;"
-                                                id="{{ $teacher->id }}">
-                                                <span style="margin-right: 10px;" class="fa fa-user"></span>
-                                                {{ $teacher->name }}
-
-                                                <span class="pull-right">
-
-                                                </span>
-                                            </li>
-
-                                            <div class="input-group-append">
-                                                <button class="btn btn-outline-secondary dropdown-toggle"
-                                                        type="button"
-                                                        data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false" id="inputGroup-sizing-sm">
-                                                </button>
-                                                <div class="dropdown-menu" id="inputGroup-sizing-sm">
-                                                    <a class="dropdown-item" href="/teacher/show/{{ $teacher->id}}"><i
-                                                                class="fas fa-eye text-primary"></i> Показать</a>
-                                                    <a class="dropdown-item"
-                                                       href="/teacher/edit/{{ $teacher->id }}"><i
-                                                                class="fas fa-pencil-alt text-success"></i>
-                                                        Редактировать</a>
-                                                    <a class="dropdown-item"
-                                                       href="/teacher/delete/{{ $teacher->id }}"><i
-                                                                class="fas fa-trash text-danger"></i> Удалить</a>
-                                                    <div role="separator" class="dropdown-divider"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-
+                            <td rowspan="{{ count($teacher['discipline'])}}">
+                                    <a href="/teacher/show/{{$teacher['id']}}">{{ $key }}</a>
+                                </td>
+                                
+                                <td rowspan="{{ count($teacher['discipline'])}}">
+                                    {{ $teacher['total'] }}
+                                </td>
+                                    @foreach($teacher['discipline'] as $name => $discipline)
+                                    <td>
+                                        <a href="*">{{ $name }}</a> 
+                                    </td> 
+                                    <td>
+                                        @foreach ($discipline['group'] as $name_group => $item)
+                                            {{ $name_group }}
+                                        @endforeach
+                                    </td>
+                                    </tr>
                                     @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                    @else
-                        <div class="alert alert-info" role="alert">
-                            <strong>Таблица пуста!</strong> добавить записи можно нажав кнопку
-                            <strong>Добавить</strong>.
-                        </div>
-                    @endif
+                            </tr>
+                        @endforeach                       
+                    </tbody>
+                </table>
 
-                    <div class="row main">
-                        <div class="col">
-
-                        </div>
-                    </div>
+                @else
+                <div class="alert alert-info" role="alert">
+                    <strong>Таблица пуста!</strong> добавить записи можно нажав кнопку
+                    <strong>Добавить</strong>.
                 </div>
+                @endif
             </div>
-        </div>
+        </div>   
     </div>
-
 @endsection

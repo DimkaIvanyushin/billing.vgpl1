@@ -13,6 +13,8 @@ use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
+use Illuminate\Support\Facades\DB;
+
 class TeacherController extends Controller
 {
     private $max_hour;
@@ -31,11 +33,49 @@ class TeacherController extends Controller
 
     public function home()
     {
-        $teachers = Teacher::get();
+        $start = microtime(true);
+
+        $data = $this->get_teacher_hours();
+
+        $time = microtime(true) - $start;
+        echo "Время выполнения функции ".$time."<br>";
 
         return view('teacher.home', [
-            'teachers' => $teachers
+            'teachers' => $data
         ]);
+    }
+
+    private function get_teacher_hours()
+    {
+        $result = [];
+
+        $all_discipline = Discipline::get();
+        $all_teacher = Teacher::get();
+        $all_group = Group::get();
+
+        $data = TableHoure::get()->groupBy('teacher_id');
+        foreach ($data as $key => $value) {
+
+            $teacher = $all_teacher->find($key);
+
+            $disciplines = $value->groupBy('discipline_id');
+
+            $result[$teacher->name]['total'] = 0;
+            $result[$teacher->name]['id'] =  $teacher->id;
+
+            foreach ($disciplines as $key => $value) {
+                $discipline_name =  $all_discipline->find($key)->name;
+                $group = $value->groupBy('group_id');
+
+                foreach ($group as $key => $value) {
+                    $group_name = $all_group->find($key)->name;
+                    $result[$teacher->name]['discipline'][$discipline_name]['group'][$group_name] = $value;
+                    $result[$teacher->name]['total'] += $value->where('otherhour_id', '>', 2)->sum('hour');
+                }
+            }
+        }
+        
+        return $result;
     }
 
     public function entryes()
@@ -56,6 +96,7 @@ class TeacherController extends Controller
                 $j++;
             }
             $data[$j][$teacher->name] = $this->get_hour_teacher($teacher);
+            $data[$j][$teacher->name]['id'] = $teacher->id;
             $i++;
         }
 
@@ -96,6 +137,7 @@ class TeacherController extends Controller
                 }
                 
                 $data[$discipline_teacher->name]['percent'] =  $percent;
+                $data[$discipline_teacher->name]['url'] = '/discipline/show/'.$discipline_teacher->id;
 
                 foreach ($groups_discipline as $key => $group_disciplines) {
                     $group_teacher = Group::find($key);

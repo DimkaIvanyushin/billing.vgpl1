@@ -13,6 +13,8 @@ class TableHoure extends Model
      */
     protected $table = 'table_houres';
 
+    protected $fillable = ['discipline_id', 'group_id', 'teacher_id', 'otherhour_id', 'hour'];
+
     public function group()
     {
         return $this->belongsTo('App\Group');

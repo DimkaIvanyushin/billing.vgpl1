@@ -110,6 +110,8 @@
                     2018 - 2019 учебный год
                 </div>
 
+                @if(count($data) > 0)
+        
                 <table class="table table-bordered bg-white table-striped main_table" align="center">
                     <thead>
                     <td class="table_desc" rowspan="2">Дисциплина</td>
@@ -172,6 +174,7 @@
                         </tr>
                     </tbody>
                 </table>
+                @endif
             </div>
         </div>
     </div>
@@ -184,11 +187,11 @@
 
         var calc_lpz = function () {
             var val = 0;
-            var val_1pg = parseInt($('input#3').val(),10);
-            var val_2pg = parseInt($('input#4').val(),10);
+            var val_1pg = parseInt($('input#4').val(),10);
+            var val_2pg = parseInt($('input#5').val(),10);
             var lpz = parseInt($('input#2').val(),10);
 
-            val = (val_2pg * 1 + val_1pg) - lpz;
+            val = (val_2pg + val_1pg) - lpz;
 
             $( "input#1" ).val(val);
         };
@@ -214,7 +217,7 @@
     });
 
         $( "input#2" ).blur(calc_lpz);
-        $( "input#3" ).blur(calc_lpz);
         $( "input#4" ).blur(calc_lpz);
+        $( "input#5" ).blur(calc_lpz);
     </script>
 @endsection
